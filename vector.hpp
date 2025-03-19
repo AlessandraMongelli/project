@@ -3,19 +3,22 @@
 
 #include <vector>
 
+namespace pf {
 class Vector
 {
-private:
-    float x_;
-    float y_;
+ private:
+  float x_;
+  float y_;
 
-public:
-    Vector();
-    Vector(float x, float y);
+ public:
+  Vector();
+  Vector(float x, float y);
 
-    float get_x() const;
-    float get_y() const;
-    float set_x(float new_x);
-    float set_y(float new_y);
+  float get_x() const;
+  float get_y() const;
+  float set_x(float new_x);
+  float set_y(float new_y);
 };
+} // namespace vec
+
 #endif
