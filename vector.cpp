@@ -61,4 +61,25 @@ float Vector::distance(const Vector& w) const
   assert(dist >= 0.);
   return dist;
 }
+
+float Vector::norm() const
+{
+  const float norm = sqrt(pow(x_, 2) + pow(y_, 2));
+  assert(norm >= 0.);
+  return norm;
+};
+
+float Vector::product(const Vector& w) const
+{
+  float product = x_ * w.x_ + y_ * w.y_;
+  return product;
+};
+
+bool Vector::operator==(const Vector& w) const
+{
+  if (w.x_ == x_ && w.y_ == y_) {
+    return true;
+  } else
+    return false;
+};
 } // namespace pf
