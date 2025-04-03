@@ -1,7 +1,9 @@
 #include "vector.hpp"
 
 namespace pf {
-Vector::Vector(): x_{0.0f}, y_{0.0f} {};
+Vector::Vector()
+    : x_{0.0f}
+    , y_{0.0f} {};
 Vector::Vector(float x, float y)
 {
   x_ = x;
@@ -26,6 +28,23 @@ float Vector::set_y(float new_y)
   return y_ = new_y;
 };
 
+Vector& Vector::operator+=(const Vector& w)
+{
+  x_ += w.x_;
+  y_ += w.y_;
+  return *this;
+}
 
+Vector Vector::operator+(const Vector& w) const
+{
+  Vector result = *this;
+  return result += w;
+}
+
+Vector Vector::operator-(const Vector& w) const
+{
+  Vector neg_w{-w.x_, -w.y_};
+  return *this + neg_w;
+}
 
 } // namespace pf
