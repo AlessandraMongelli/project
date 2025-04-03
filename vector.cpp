@@ -25,4 +25,7 @@ float Vector::set_y(float new_y)
 {
   return y_ = new_y;
 };
+
+
+
 } // namespace pf
