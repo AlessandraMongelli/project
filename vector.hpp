@@ -18,7 +18,8 @@ class Vector
   float get_y() const;
   float set_x(float new_x);
   float set_y(float new_y);
+  Vector operator+(const Vector&) const;
 };
-} // namespace vec
+} // namespace pf
 
 #endif
