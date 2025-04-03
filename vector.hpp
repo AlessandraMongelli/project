@@ -21,6 +21,7 @@ class Vector
   Vector operator+(const Vector&) const;
   Vector& operator+=(const Vector&);
   Vector operator-(const Vector&) const;
+  Vector operator *=
 };
 } // namespace pf
 
