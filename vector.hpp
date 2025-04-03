@@ -22,7 +22,10 @@ class Vector
   Vector& operator+=(const Vector&);
   Vector operator-(const Vector&) const;
   Vector operator*(float scalar) const;
+  bool operator==(const Vector&) const;
+  float product(const Vector&) const;
   float distance(const Vector&) const;
+  float norm() const;
 };
 } // namespace pf
 

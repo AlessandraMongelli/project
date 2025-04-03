@@ -56,3 +56,28 @@ TEST_CASE("Testing distance")
 
   CHECK(v.distance(w) == doctest::Approx(1.41421f));
 }
+
+TEST_CASE("Testing norm")
+{
+  const pf::Vector v{0.0f, 2.0f};
+
+  CHECK(v.norm() == doctest::Approx(2.0f));
+}
+
+TEST_CASE("Testing product")
+{
+  const pf::Vector v{0.0f, 2.0f};
+  const pf::Vector w{2.0f, 1.3f};
+
+  CHECK(v.product(w) == doctest::Approx(2.6f));
+}
+
+TEST_CASE("Testing operator ==")
+{
+  const pf::Vector v{2.0f, 1.3f};
+  const pf::Vector w{2.0f, 1.3f};
+  
+  CHECK(v==w);
+}
+
+
