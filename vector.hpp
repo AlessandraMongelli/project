@@ -21,7 +21,8 @@ class Vector
   Vector operator+(const Vector&) const;
   Vector& operator+=(const Vector&);
   Vector operator-(const Vector&) const;
-  Vector operator*=
+  Vector operator*(float scalar) const;
+  float distance(const Vector&) const;
 };
 } // namespace pf
 

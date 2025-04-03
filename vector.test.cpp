@@ -39,6 +39,20 @@ TEST_CASE("Testing operator-")
   CHECK(diff.get_y() == doctest::Approx(0.0f));
 }
 
+TEST_CASE("Testing operator*")
+{
+  const pf::Vector v{1.0f, 1.0f};
+  float x = 2.5;
+  const pf::Vector prod(v * x);
 
+  CHECK(prod.get_x() == doctest::Approx(2.5f));
+  CHECK(prod.get_y() == doctest::Approx(2.5f));
+}
 
+TEST_CASE("Testing distance")
+{
+  const pf::Vector v{1.0f, 1.0f};
+  const pf::Vector w{2.0f, 2.0f};
 
+  CHECK(v.distance(w) == doctest::Approx(1.41421f));
+}

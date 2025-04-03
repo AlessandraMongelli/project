@@ -1,4 +1,6 @@
 #include "vector.hpp"
+#include <cassert>
+#include <cmath>
 
 namespace pf {
 Vector::Vector()
@@ -47,4 +49,16 @@ Vector Vector::operator-(const Vector& w) const
   return *this + neg_w;
 }
 
+Vector Vector::operator*(float c) const
+{
+  Vector prod{x_ * c, y_ * c};
+  return prod;
+}
+
+float Vector::distance(const Vector& w) const
+{
+  const float dist = sqrt(pow(x_ - w.x_, 2) + pow(y_ - w.y_, 2));
+  assert(dist >= 0.);
+  return dist;
+}
 } // namespace pf
