@@ -27,7 +27,9 @@ if (BUILD_TESTING)
 
   # aggiungi l'eseguibile all.t
    add_executable(vector.t vector.test.cpp vector.cpp)
+   add_executable(boid.t boid.test.cpp vector.cpp boid.cpp)
   # aggiungi l'eseguibile all.t alla lista dei test
    add_test(NAME vector.t COMMAND vector.t)
+   add_test(NAME boid.t COMMAND boid.t)
 
 endif()

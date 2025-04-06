@@ -3,9 +3,7 @@
 #include <cmath>
 
 namespace pf {
-Vector::Vector()
-    : x_{0.0f}
-    , y_{0.0f} {};
+Vector::Vector(): x_{0.0f}, y_{0.0f} {};
 Vector::Vector(float x, float y)
 {
   x_ = x;
@@ -16,6 +14,7 @@ float Vector::get_x() const
 {
   return x_;
 };
+
 float Vector::get_y() const
 {
   return y_;
@@ -25,6 +24,7 @@ float Vector::set_x(float new_x)
 {
   return x_ = new_x;
 };
+
 float Vector::set_y(float new_y)
 {
   return y_ = new_y;
@@ -57,14 +57,14 @@ Vector Vector::operator*(float c) const
 
 float Vector::distance(const Vector& w) const
 {
-  const float dist = sqrt(pow(x_ - w.x_, 2) + pow(y_ - w.y_, 2));
+  const float dist = std::sqrt(std::pow(x_ - w.x_, 2) + std::pow(y_ - w.y_, 2));
   assert(dist >= 0.);
   return dist;
 }
 
 float Vector::norm() const
 {
-  const float norm = sqrt(pow(x_, 2) + pow(y_, 2));
+  const float norm = std::sqrt(std::pow(x_, 2) + std::pow(y_, 2));
   assert(norm >= 0.);
   return norm;
 };
@@ -77,9 +77,6 @@ float Vector::product(const Vector& w) const
 
 bool Vector::operator==(const Vector& w) const
 {
-  if (w.x_ == x_ && w.y_ == y_) {
-    return true;
-  } else
-    return false;
+  return (w.x_ == x_ && w.y_ == y_);
 };
 } // namespace pf
