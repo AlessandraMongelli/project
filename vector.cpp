@@ -3,7 +3,9 @@
 #include <cmath>
 
 namespace pf {
-Vector::Vector(): x_{0.0f}, y_{0.0f} {};
+Vector::Vector()
+    : x_{0.0f}
+    , y_{0.0f} {};
 Vector::Vector(float x, float y)
 {
   x_ = x;
