@@ -1,6 +1,7 @@
 #ifndef BOID_H
 #define BOID_H
 #include "vector.hpp"
+#include <vector>
 
 namespace pf {
 
@@ -14,13 +15,13 @@ class Boid
   float ds = 0.5f;
   float s  = 0.7f;
   float a  = 0.7f;
+  std::vector<Boid> entries_{};
 
  public:
   Boid();
   Boid(Vector, Vector);
 
-  std::vector<Vector> entries_{};
-  void add(Vector&);
+  void add(Boid&);
   int size()
   {
     return entries_.size();

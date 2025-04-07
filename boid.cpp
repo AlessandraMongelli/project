@@ -1,7 +1,6 @@
 #include "boid.hpp"
 #include "vector.hpp"
 #include <cmath>
-#include <vector>
 
 namespace pf {
 
@@ -15,9 +14,9 @@ Boid::Boid(Vector xb, Vector vb)
   v_b = vb;
 };
 
-void Boid::add(Vector& x)
+void Boid::add(Boid& boid)
 {
-  entries_.push_back(x);
+  entries_.push_back(boid);
 };
 
 Vector Boid::get_position() const
