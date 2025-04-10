@@ -40,11 +40,17 @@ Vector Boid::Separation(const Vector& xb2) const
   }
 }
 
-Vector Boid::Alignment(const Vector& vb2) const
+Vector Boid::Alignment(const std::vector<Boid>& entries_) const
 {
   Vector v_2(0., 0.);
+  Vector sum(0., 0.);
   int n = entries_.size();
-  v_2 == ((vb2 * (1 / (n - 1))) - v_b) * a;
+  for (int i = 0; i < n; i++) {
+    sum += entries_[i].get_velocity();
+  }
+
+  v_2 == ((sum * (1 / (n - 1))) - v_b) * a;
+
   return v_2;
 };
 

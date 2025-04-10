@@ -15,9 +15,9 @@ class Boid
   float ds = 0.5f;
   float s  = 0.7f;
   float a  = 0.7f;
-  std::vector<Boid> entries_{};
 
  public:
+  std::vector<Boid> entries_{};
   Boid();
   Boid(Vector, Vector);
 
@@ -31,7 +31,7 @@ class Boid
   Vector get_velocity() const;
 
   Vector Separation(const Vector&) const;
-  Vector Alignment(const Vector&) const;
+  Vector Alignment(const std::vector<Boid>&) const;
 };
 } // namespace pf
 
