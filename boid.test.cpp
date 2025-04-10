@@ -5,7 +5,7 @@
 #include "vector.hpp"
 
 TEST_CASE("Testing Boid Class")
-{
+{ pf::Boid boids;
   const pf::Vector xb1(0., 0.);
   const pf::Vector vb1(0., 0.);
 
@@ -49,6 +49,9 @@ TEST_CASE("Testing Boid Class")
 
     SUBCASE("Testing size")
   {
-    CHECK(boid1.size()==3);
+    boids.add(boid1);
+    boids.add(boid2);
+    boids.add(boid3);
+    CHECK(boids.size()==3);
     }
 }

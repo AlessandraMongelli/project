@@ -40,7 +40,7 @@ Vector Boid::Separation(const Vector& xb2) const
   }
 }
 
-Vector Boid::Alignment(const Vector& vb2, const Vector& xb2) const
+Vector Boid::Alignment(const Vector& vb2) const
 {
   Vector v_2(0., 0.);
   int n = entries_.size();
