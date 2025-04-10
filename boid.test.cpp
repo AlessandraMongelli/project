@@ -54,5 +54,11 @@ TEST_CASE("Testing Boid Class")
     boids.add(boid2);
     boids.add(boid3);
     CHECK(boids.size() == 3);
+
+    SUBCASE("Testing Alignment")
+    {
+      CHECK(boid3.Alignment(entries_).get_x() == doctest::Approx(-0.75));
+      CHECK(boid3.Alignment(entries_).get_y() == doctest::Approx(-0.75));
+    }
   }
 }
