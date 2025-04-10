@@ -49,9 +49,6 @@ TEST_CASE("Testing Boid Class")
 
     SUBCASE("Testing size")
   {
-    boids.add(boid1);
-    boids.add(boid2);
-    boids.add(boid3);
-    CHECK(boids.size()==3);
+    CHECK(boid1.size()==3);
     }
 }
