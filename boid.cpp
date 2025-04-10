@@ -40,7 +40,7 @@ Vector Boid::Separation(const Vector& xb2) const
   }
 }
 
-Vector Boid::Alignment(const std::vector<Boid>& entries_) const
+Vector Boid::Alignment(const Boid& boid) const
 {
   Vector v_2(0., 0.);
   Vector sum(0., 0.);

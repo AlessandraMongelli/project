@@ -31,7 +31,7 @@ class Boid
   Vector get_velocity() const;
 
   Vector Separation(const Vector&) const;
-  Vector Alignment(const std::vector<Boid>&) const;
+  Vector Alignment(const Boid&) const;
 };
 } // namespace pf
 
