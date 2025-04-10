@@ -45,10 +45,5 @@ TEST_CASE("Testing Boid Class")
     CHECK(boid1.Separation(xb3).get_y() == doctest::Approx(0.7));
     CHECK(boid1.Separation(xb1).get_x() == doctest::Approx(0.));
     CHECK(boid1.Separation(xb1).get_y() == doctest::Approx(0.));
-    }
-
-    SUBCASE("Testing size")
-  {
-    CHECK(boid1.size()==);
-    }
+  }
 }
