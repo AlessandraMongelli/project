@@ -11,27 +11,17 @@ class Boid
   Vector x_b;
   Vector v_b;
 
-  float d;
-  float ds = 0.5f;
-  float s  = 0.7f;
-  float a  = 0.7f;
-
  public:
-  std::vector<Boid> entries_{};
   Boid();
   Boid(Vector, Vector);
-
-  void add(Boid&);
-  int size()
-  {
-    return entries_.size();
-  }
 
   Vector get_position() const;
   Vector get_velocity() const;
 
-  Vector Separation(const Vector&) const;
-  Vector Alignment(const Boid&) const;
+  std::vector<Boid> Neighboring(const std::vector<Boid>&, float d);
+  Vector Separation(const std::vector<Boid>&, float ds, float s) const;
+  /*Vector Alignment(const Boid&) const;
+  Vector Cohesion(const Boid&) const; */
 };
 } // namespace pf
 
