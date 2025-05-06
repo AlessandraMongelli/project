@@ -21,6 +21,8 @@ class Boid
 
   std::vector<Boid> Neighboring(const std::vector<Boid>&, float d);
   Vector Separation(const std::vector<Boid>&, float ds, float s) const;
+
+  Vector Alignment(const std::vector<Boid>&, float a) const;
   /* Vector Alignment(const Boid&) const;
   Vector Cohesion(const Boid&) const; */
 };
