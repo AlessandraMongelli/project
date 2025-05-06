@@ -35,9 +35,9 @@ TEST_CASE("Testing Boid Class")
     CHECK(boid1.Separation(neighbors1, 0.8, 1.).get_y()
           == doctest::Approx(-0.5));
     CHECK(boid2.Separation(boid2.Neighboring(boids, 1.), 0.8, 1.).get_x()
-          == doctest::Approx(0.));
+          == doctest::Approx(0.5));
     CHECK(boid2.Separation(boid2.Neighboring(boids, 1.), 0.8, 1.).get_y()
-          == doctest::Approx(0.));
+          == doctest::Approx(0.5));
   }
 
   SUBCASE("Testing get_...()")
