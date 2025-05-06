@@ -58,6 +58,21 @@ Vector Boid::Separation(const std::vector<Boid>& neighbors, float ds,
   return this->get_velocity() + v_1;
 }
 
+Vector Boid::Alignment(const std::vector<Boid>& neighbors, float a) const
+{
+  Vector v_2(0., 0.);
+  for (int i = 0; i < neighbors.size(); i++) {
+    if (x_b == neighbors[i].get_position()) {
+      continue;
+    } else {
+      v_2 +=
+          (((neighbors[i].get_velocity()) * (1 / (neighbors.size() - 1))) - v_b)
+          * a;
+    }
+  }
+  return this->get_velocity() + v_2;
+}
+
 /*Vector Boid::Alignment(const Boid& boid2) const
 {
   Vector v_2(0., 0.);
