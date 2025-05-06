@@ -14,9 +14,10 @@ class Flock
   Flock();
   Flock(std::vector<Boid>);
 
+  Flock add_boids(const std::vector<Boid>&);
   Boid get_boids() const;
 
-  
+  Boid Flock_Separation(const Boid&) const;
 
 };
 } // namespace pf
