@@ -61,15 +61,14 @@ Vector Boid::Separation(const std::vector<Boid>& neighbors, float ds,
 Vector Boid::Alignment(const std::vector<Boid>& neighbors, float a) const
 {
   Vector v_2(0., 0.);
-  Vector v_21(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
     if (x_b == neighbors[i].get_position()) {
       continue;
     } else {
-      v_21 += neighbors[i].get_velocity() * (1 / neighbors.size());
+      v_2 += neighbors[i].get_velocity() * (1.0f / neighbors.size());
     }
   }
-  return v_2 = (v_21 - this->get_velocity()) * a;
+  return (v_2 - this->get_velocity()) * a;
 }
 
 Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
@@ -80,7 +79,7 @@ Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
     if (x_b == neighbors[i].get_position()) {
       continue;
     } else {
-      x_c += neighbors[i].get_position() * (1 / neighbors.size());
+      x_c += neighbors[i].get_position() * (1.0f / neighbors.size());
     }
   }
   return v_3 = (x_c - this->get_position()) * c;
