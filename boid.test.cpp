@@ -22,6 +22,7 @@ TEST_CASE("Testing Boid Class")
   std::vector<pf::Boid> boids      = {boid1, boid2, boid3};
   std::vector<pf::Boid> neighbors1 = boid1.Neighboring(boids, 1.);
   std::vector<pf::Boid> neighbors2 = boid2.Neighboring(boids, 1.);
+  std::vector<pf::Boid> neighbors3 = boid3.Neighboring(boids, 1.);
 
   SUBCASE("Testing Neighboring function")
   {
@@ -43,10 +44,30 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the Alignment rule")
   {
-    CHECK(boid1.Alignment(neighbors1, 0.7).get_x() == doctest::Approx(0.525));
-    CHECK(boid1.Alignment(neighbors1, 0.7).get_y() == doctest::Approx(0.525));
-    CHECK(boid1.Alignment(neighbors2, 0.7).get_x() == doctest::Approx(0.));
-    CHECK(boid1.Alignment(neighbors2, 0.7).get_y() == doctest::Approx(0.));
+    CHECK(boid1.Alignment(neighbors1, 0.7).get_x() == doctest::Approx(0.35));
+    CHECK(boid1.Alignment(neighbors1, 0.7).get_y() == doctest::Approx(0.35));
+    CHECK(boid2.Alignment(neighbors2, 0.7).get_x() == doctest::Approx(0.0));
+    CHECK(boid2.Alignment(neighbors2, 0.7).get_y() == doctest::Approx(0.0));
+    CHECK(boid3.Alignment(neighbors3, 0.7).get_x() == doctest::Approx(-0.35));
+    CHECK(boid3.Alignment(neighbors3, 0.7).get_y() == doctest::Approx(-0.35));
+  }
+
+  SUBCASE("Testing the Cohesion rule")
+  {
+    CHECK(boid1.Cohesion(neighbors1, 0.4).get_x() == doctest::Approx(0.2));
+    CHECK(boid1.Cohesion(neighbors1, 0.4).get_y() == doctest::Approx(0.2));
+    CHECK(boid2.Cohesion(neighbors2, 0.4).get_x() == doctest::Approx(0.0));
+    CHECK(boid2.Cohesion(neighbors2, 0.4).get_y() == doctest::Approx(0.0));
+    CHECK(boid3.Cohesion(neighbors3, 0.4).get_x() == doctest::Approx(-0.2));
+    CHECK(boid3.Cohesion(neighbors3, 0.4).get_y() == doctest::Approx(-0.2));
+  }
+
+  SUBCASE("Testing the Flocking rule")
+  {
+    CHECK(boid1.Flocking(neighbors1).get_x() == doctest::Approx(0.05));
+    CHECK(boid1.Flocking(neighbors1).get_y() == doctest::Approx(0.05));
+    CHECK(boid2.Flocking(neighbors2).get_x() == doctest::Approx(0.5));
+    CHECK(boid2.Flocking(neighbors2).get_y() == doctest::Approx(0.5));
   }
 
   SUBCASE("Testing get_...()")

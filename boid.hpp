@@ -23,6 +23,10 @@ class Boid
   Vector Separation(const std::vector<Boid>&, float ds, float s) const;
 
   Vector Alignment(const std::vector<Boid>&, float a) const;
+
+  Vector Cohesion(const std::vector<Boid>&, float c) const;
+
+  Vector Flocking(const std::vector<Boid>&) const;
   /* Vector Alignment(const Boid&) const;
   Vector Cohesion(const Boid&) const; */
 };

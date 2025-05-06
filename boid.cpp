@@ -55,16 +55,38 @@ Vector Boid::Separation(const std::vector<Boid>& neighbors, float ds,
 Vector Boid::Alignment(const std::vector<Boid>& neighbors, float a) const
 {
   Vector v_2(0., 0.);
+  Vector v_21(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
     if (x_b == neighbors[i].get_position()) {
       continue;
     } else {
-      v_2 +=
-          (((neighbors[i].get_velocity()) * (1 / (neighbors.size() - 1))) - v_b)
-          * a;
+      v_21 += neighbors[i].get_velocity() * (1 / neighbors.size());
     }
   }
-  return this->get_velocity() + v_2;
+  return v_2 = (v_21 - this->get_velocity()) * a;
+}
+
+Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
+{
+  Vector v_3(0., 0.);
+  Vector x_c(0., 0.);
+  for (int i = 0; i < neighbors.size(); i++) {
+    if (x_b == neighbors[i].get_position()) {
+      continue;
+    } else {
+      x_c += neighbors[i].get_position() * (1 / neighbors.size());
+    }
+  }
+  return v_3 = (x_c - this->get_position()) * c;
+}
+
+Vector Boid::Flocking(const std::vector<Boid>& neighbors) const
+{
+  Vector v_f(0., 0.);
+  Vector v_1 = Separation(neighbors, 0.8, 1.0);
+  Vector v_2 = Alignment(neighbors, 0.7);
+  Vector v_3 = Cohesion(neighbors, 0.4);
+  return v_f = v_1 + v_2 + v_3;
 }
 
 /*Vector Boid::Alignment(const Boid& boid2) const
