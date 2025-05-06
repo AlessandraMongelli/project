@@ -93,27 +93,4 @@ Vector Boid::Flocking(const std::vector<Boid>& neighbors) const
   Vector v_3 = Cohesion(neighbors, 0.4);
   return v_f = v_1 + v_2 + v_3;
 }
-
-/*Vector Boid::Alignment(const Boid& boid2) const
-{
-  Vector v_2(0., 0.);
-  for (int i = 0; i<neighbors.size(); i++)
-  if (boid2.get_position() == x_b && boid2.get_velocity() == v_b) {
-  } else {
-    v_2 += (boid2.get_velocity() * (1 / (n - 1))) * a;
-  }
-  return this->get.velocity() - v_b;
-}
-
-Vector Boid::Cohesion(const Boid& boid2) const
-{
-  Vector v_3(0., 0.);
-  Vector cm = boid2.get_position() * (1 / (n - 1));
-  if (boid2.get_position() == x_b && boid2.get_velocity() == v_b) {
-  } else {
-    v_3 += (cm - x_b) * c;
-  }
-  return v_3;
-}*/
-
 }; // namespace pf
