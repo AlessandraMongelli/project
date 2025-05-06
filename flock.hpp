@@ -8,10 +8,16 @@ namespace pf {
 class Flock
 {
  private:
-  std::vector<Boid> flock;
+  std::vector<Boid> flock_;
 
  public:
- 
+  Flock();
+  Flock(std::vector<Boid>);
+
+  Boid get_boids() const;
+
+  
+
 };
 } // namespace pf
 

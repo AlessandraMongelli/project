@@ -6,12 +6,14 @@ namespace pf {
 
 Boid::Boid()
     : x_b(0., 0.)
-    , v_b(0., 0.) {};
+    , v_b(0., 0.)
+    , view_angle(0.) {};
 
-Boid::Boid(Vector xb, Vector vb)
+Boid::Boid(Vector xb, Vector vb, float va)
 {
   x_b = xb;
   v_b = vb;
+  view_angle = va;
 };
 
 Vector Boid::get_position() const
@@ -22,6 +24,10 @@ Vector Boid::get_position() const
 Vector Boid::get_velocity() const
 {
   return v_b;
+};
+
+float Boid::get_view_angle() const{
+return view_angle;
 };
 
 std::vector<Boid> Boid::Neighboring(const std::vector<Boid>& boids, float d)

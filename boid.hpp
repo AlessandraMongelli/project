@@ -14,10 +14,11 @@ class Boid
 
  public:
   Boid();
-  Boid(Vector, Vector);
+  Boid(Vector, Vector, float);
 
   Vector get_position() const;
   Vector get_velocity() const;
+  float get_view_angle() const;
 
   std::vector<Boid> Neighboring(const std::vector<Boid>&, float d);
   Vector Separation(const std::vector<Boid>&, float ds, float s) const;
