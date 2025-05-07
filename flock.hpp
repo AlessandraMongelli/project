@@ -2,6 +2,8 @@
 #define FLOCK_H
 #include "boid.hpp"
 #include "vector.hpp"
+#include <numeric>
+#include <algorithm>
 #include <vector>
 
 namespace pf {

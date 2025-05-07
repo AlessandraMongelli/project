@@ -27,7 +27,6 @@ class Boid
 
   Vector Cohesion(const std::vector<Boid>&, float c) const;
 
-  Vector update_velocity(const std::vector<Boid>&) const;
 };
 } // namespace pf
 
