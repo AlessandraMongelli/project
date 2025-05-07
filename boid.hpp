@@ -27,9 +27,12 @@ class Boid
 
   Vector Cohesion(const std::vector<Boid>&, float c) const;
 
+<<<<<<< HEAD
   Vector update_velocity(const std::vector<Boid>&) const;
 
   Vector max_v(const Boid&) const;
+=======
+>>>>>>> 35fad241945319fc88b52f0e186be2df6bfd400e
 };
 } // namespace pf
 

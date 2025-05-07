@@ -1,6 +1,8 @@
 #include "flock.hpp"
 #include "boid.hpp"
 #include "vector.hpp"
+#include <algorithm>
+#include <vector>
 #include <cmath>
 
 namespace pf {
@@ -28,12 +30,9 @@ Boid Flock::get_boids() const
 };
 
 Boid Flock::Flock_Separation(const Boid& flockboids) const {
-  for (int i = 0; i < flock_.size(); i++)
-  {
-    /* code */
-  }
   
 };
+
 Boid Flock::Flock_Alignment(const Boid& flockboids) const {};
 Boid Flock::Flock_Cohesion(const Boid& flockboids) const {};
    

@@ -8,12 +8,15 @@ TEST_CASE("Testing Boid Class")
 {
   const pf::Vector xb1(0., 0.);
   const pf::Vector vb1(0., 0.);
+  const float va1 (0.);
 
   const pf::Vector xb2(0.5, 0.5);
   const pf::Vector vb2(0.5, 0.5);
+  const float va2 (0.);
 
   const pf::Vector xb3(1.0, 1.0);
   const pf::Vector vb3(1.0, 1.0);
+  const float va3 (0.);
 
   const float va1 = 0;
   const float va2 = 0;
