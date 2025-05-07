@@ -27,8 +27,10 @@ Boid Flock::get_boids() const
   }
 };
 
-Boid Flock::Flock_Separation(const Boid& flockboids) const {
-    
+Boid Flock::Flock_Separation(const Boid& flockboids) const {};
+Boid Flock::Flock_Alignment(const Boid& flockboids) const {};
+Boid Flock::Flock_Cohesion(const Boid& flockboids) const {};
+   
 };
 
 

@@ -48,8 +48,7 @@ Vector Boid::Separation(const std::vector<Boid>& neighbors, float ds,
 {
   Vector v_1(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
-    if (x_b == neighbors[i].get_position()
-        || (x_b).distance(neighbors[i].get_position()) > ds) {
+    if ((x_b).distance(neighbors[i].get_position()) > ds) {
       continue;
     } else {
       v_1 += (x_b - neighbors[i].get_position()) * s;
@@ -73,7 +72,6 @@ Vector Boid::Alignment(const std::vector<Boid>& neighbors, float a) const
 
 Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
 {
-  Vector v_3(0., 0.);
   Vector x_c(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
     if (x_b == neighbors[i].get_position()) {
@@ -82,10 +80,10 @@ Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
       x_c += neighbors[i].get_position() * (1.0f / neighbors.size());
     }
   }
-  return v_3 = (x_c - this->get_position()) * c;
+  return (x_c - this->get_position()) * c;
 }
 
-Vector Boid::Flocking(const std::vector<Boid>& neighbors) const
+Vector Boid::update_velocity(const std::vector<Boid>& neighbors) const
 {
   Vector v_f(0., 0.);
   Vector v_1 = Separation(neighbors, 0.8, 1.0);
@@ -93,4 +91,5 @@ Vector Boid::Flocking(const std::vector<Boid>& neighbors) const
   Vector v_3 = Cohesion(neighbors, 0.4);
   return v_f = v_1 + v_2 + v_3;
 }
+
 }; // namespace pf

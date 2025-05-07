@@ -27,9 +27,7 @@ class Boid
 
   Vector Cohesion(const std::vector<Boid>&, float c) const;
 
-  Vector Flocking(const std::vector<Boid>&) const;
-  /* Vector Alignment(const Boid&) const;
-  Vector Cohesion(const Boid&) const; */
+  Vector update_velocity(const std::vector<Boid>&) const;
 };
 } // namespace pf
 

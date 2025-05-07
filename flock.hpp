@@ -18,6 +18,8 @@ class Flock
   Boid get_boids() const;
 
   Boid Flock_Separation(const Boid&) const;
+  Boid Flock_Alignment(const Boid&) const;
+  Boid Flock_Cohesion(const Boid&) const;
 
 };
 } // namespace pf
