@@ -62,14 +62,6 @@ TEST_CASE("Testing Boid Class")
     CHECK(boid3.Cohesion(neighbors3, 0.4).get_y() == doctest::Approx(-0.2));
   }
 
-  SUBCASE("Testing the Flocking rule")
-  {
-    CHECK(boid1.Flocking(neighbors1).get_x() == doctest::Approx(0.05));
-    CHECK(boid1.Flocking(neighbors1).get_y() == doctest::Approx(0.05));
-    CHECK(boid2.Flocking(neighbors2).get_x() == doctest::Approx(0.5));
-    CHECK(boid2.Flocking(neighbors2).get_y() == doctest::Approx(0.5));
-  }
-
   SUBCASE("Testing get_...()")
   {
     CHECK(boid1.get_position().get_x() == doctest::Approx(0.));

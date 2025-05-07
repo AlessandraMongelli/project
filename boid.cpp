@@ -82,14 +82,4 @@ Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
   }
   return (x_c - this->get_position()) * c;
 }
-
-Vector Boid::update_velocity(const std::vector<Boid>& neighbors) const
-{
-  Vector v_f(0., 0.);
-  Vector v_1 = Separation(neighbors, 0.8, 1.0);
-  Vector v_2 = Alignment(neighbors, 0.7);
-  Vector v_3 = Cohesion(neighbors, 0.4);
-  return v_f = v_1 + v_2 + v_3;
-}
-
 }; // namespace pf
