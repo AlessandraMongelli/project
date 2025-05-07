@@ -11,8 +11,8 @@ Boid::Boid()
 
 Boid::Boid(Vector xb, Vector vb, float va)
 {
-  x_b = xb;
-  v_b = vb;
+  x_b        = xb;
+  v_b        = vb;
   view_angle = va;
 };
 
@@ -26,8 +26,9 @@ Vector Boid::get_velocity() const
   return v_b;
 };
 
-float Boid::get_view_angle() const{
-return view_angle;
+float Boid::get_view_angle() const
+{
+  return view_angle;
 };
 
 std::vector<Boid> Boid::Neighboring(const std::vector<Boid>& boids, float d)
@@ -81,5 +82,23 @@ Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
     }
   }
   return (x_c - this->get_position()) * c;
+}
+
+Vector Boid::max_v(const Boid&) const
+{
+  Vector v_max(40., 40.);
+  Vector v_diff(0.5, 0.5);
+  Vector v_d(0.5, -0.5);
+  if (v_b.norm() > v_max.norm() && v_b.get_x() > 0 && v_b.get_y() > 0) {
+    return this->get_velocity() - v_diff;
+  } else if (v_b.norm() > v_max.norm() && v_b.get_x() < 0 && v_b.get_y() < 0) {
+    return this->get_velocity() + v_diff;
+  } else if (v_b.norm() > v_max.norm() && v_b.get_x() > 0 && v_b.get_y() < 0) {
+    return this->get_velocity() - v_d;
+  } else if (v_b.norm() > v_max.norm() && v_b.get_x() < 0 && v_b.get_y() > 0) {
+    return this->get_velocity() + v_d;
+  } else {
+    return this->get_velocity();
+  }
 }
 }; // namespace pf
