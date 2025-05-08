@@ -17,6 +17,14 @@ string(APPEND CMAKE_CXX_FLAGS
       " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
       " -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast")
 
+      # Trova SFML
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+
+add_executable(boids boid.cpp main.cpp flock.cpp vector.cpp)
+
+# Aggiungi SFML alle librerie da collegare
+target_link_libraries(boids PRIVATE sfml-graphics sfml-window sfml-system)
+
 # abilita asserzioni di debug (in gcc), l'address sanitizer e l'undefined-behaviour sanitizer in debug mode
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
@@ -28,6 +36,9 @@ if (BUILD_TESTING)
   # aggiungi l'eseguibile all.t
    add_executable(vector.t vector.test.cpp vector.cpp)
    add_executable(boid.t boid.test.cpp vector.cpp boid.cpp)
+  # Collega SFML agli eseguibili di test
+   target_link_libraries(boid.t PRIVATE sfml-graphics sfml-window sfml-system)
+   target_link_libraries(vector.t PRIVATE sfml-graphics sfml-window sfml-system)
   # aggiungi l'eseguibile all.t alla lista dei test
    add_test(NAME vector.t COMMAND vector.t)
    add_test(NAME boid.t COMMAND boid.t)

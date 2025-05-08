@@ -11,12 +11,12 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist, float ali
 
         std::cout << "Updating boid at position: " << boid.get_position().get_x() << ", " << boid.get_position().get_y() << std::endl;
         // Find neighboring boids within a specific distance
-        std::vector<pf::Boid> neighbors = boid.Neighboring(boids, separation_dist);
+        std::vector<pf::Boid> neighbors = boid.neighboring(boids, separation_dist);
 
         // Calculate separation, alignment, and cohesion behaviors
-        pf::Vector separation = boid.Separation(neighbors, 30.0f, 3.0f);  // Example parameters
-        pf::Vector alignment = boid.Alignment(neighbors, alignment_factor);
-        pf::Vector cohesion = boid.Cohesion(neighbors, cohesion_factor);
+        pf::Vector separation = boid.separation(neighbors, 30.0f, 3.0f);  // Example parameters
+        pf::Vector alignment = boid.alignment(neighbors, alignment_factor);
+        pf::Vector cohesion = boid.cohesion(neighbors, cohesion_factor);
 
         // Update the velocity by combining the behaviors
         pf::Vector delta_v = separation + alignment + cohesion;
@@ -30,11 +30,7 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist, float ali
         pf::Vector pos = boid.get_position();
 
         std::cout << "New position: " << pos.get_x() << ", " << pos.get_y() << std::endl;
-        // Screen wrapping behavior (boids will reappear on the other side of the window)
-        if (pos.get_x() < 0) pos.set_x(800);
-        if (pos.get_y() < 0) pos.set_y(600);
-        if (pos.get_x() >= 800) pos.set_x(0);
-        if (pos.get_y() >= 600) pos.set_y(0);
+        boid.edges_behavior(800, 600);
  }
 }
 
@@ -60,7 +56,7 @@ int main() {
         window.clear(sf::Color::Black);
 
         // Update boids' positions and velocities based on flocking behavior
-        update_boids(boids, 40.0f, 0.03f, 0.01f);  // You can tune these parameters
+        update_boids(boids, 40.0f, 0.03f, 0.03f);  // You can tune these parameters
 
         // Draw each boid as a triangle
         for (auto& boid : boids) {
