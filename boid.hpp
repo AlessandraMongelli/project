@@ -22,17 +22,12 @@ class Boid
 
   std::vector<Boid> Neighboring(const std::vector<Boid>&, float d);
   Vector Separation(const std::vector<Boid>&, float ds, float s) const;
-
   Vector Alignment(const std::vector<Boid>&, float a) const;
-
   Vector Cohesion(const std::vector<Boid>&, float c) const;
-
-<<<<<<< HEAD
-  Vector update_velocity(const std::vector<Boid>&) const;
-
-  Vector max_v(const Boid&) const;
-=======
->>>>>>> 35fad241945319fc88b52f0e186be2df6bfd400e
+  
+  void speed_limit(float max_speed);
+  void update_velocity(const Vector&);
+  void update_position(const Vector&);
 };
 } // namespace pf
 

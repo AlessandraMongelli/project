@@ -14,8 +14,8 @@ class Vector
 
   float get_x() const;
   float get_y() const;
-  float set_x(float new_x);
-  float set_y(float new_y);
+  void set_x(float new_x);
+  void set_y(float new_y);
   Vector operator+(const Vector&) const;
   Vector& operator+=(const Vector&);
   Vector operator-(const Vector&) const;

@@ -22,14 +22,14 @@ float Vector::get_y() const
   return y_;
 };
 
-float Vector::set_x(float new_x)
+void Vector::set_x(float new_x)
 {
-  return x_ = new_x;
+  x_ = new_x;
 };
 
-float Vector::set_y(float new_y)
+void Vector::set_y(float new_y)
 {
-  return y_ = new_y;
+  y_ = new_y;
 };
 
 Vector& Vector::operator+=(const Vector& w)

@@ -1,6 +1,10 @@
 #include "boid.hpp"
-#include "vector.hpp"
+
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <cmath>
+#include <numeric>
 
 namespace pf {
 
@@ -55,19 +59,17 @@ Vector Boid::Separation(const std::vector<Boid>& neighbors, float ds,
       v_1 += (x_b - neighbors[i].get_position()) * s;
     }
   }
-  return this->get_velocity() + v_1;
+
+  return v_1;
 }
 
 Vector Boid::Alignment(const std::vector<Boid>& neighbors, float a) const
 {
   Vector v_2(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
-    if (x_b == neighbors[i].get_position()) {
-      continue;
-    } else {
-      v_2 += neighbors[i].get_velocity() * (1.0f / neighbors.size());
-    }
+    v_2 += neighbors[i].get_velocity() * (1.0f / neighbors.size());
   }
+
   return (v_2 - this->get_velocity()) * a;
 }
 
@@ -75,30 +77,28 @@ Vector Boid::Cohesion(const std::vector<Boid>& neighbors, float c) const
 {
   Vector x_c(0., 0.);
   for (int i = 0; i < neighbors.size(); i++) {
-    if (x_b == neighbors[i].get_position()) {
-      continue;
-    } else {
-      x_c += neighbors[i].get_position() * (1.0f / neighbors.size());
-    }
+    x_c += neighbors[i].get_position() * (1.0f / neighbors.size());
   }
+
   return (x_c - this->get_position()) * c;
 }
 
-Vector Boid::max_v(const Boid&) const
+void Boid::update_position(const Vector& delta_x)
 {
-  Vector v_max(40., 40.);
-  Vector v_diff(0.5, 0.5);
-  Vector v_d(0.5, -0.5);
-  if (v_b.norm() > v_max.norm() && v_b.get_x() > 0 && v_b.get_y() > 0) {
-    return this->get_velocity() - v_diff;
-  } else if (v_b.norm() > v_max.norm() && v_b.get_x() < 0 && v_b.get_y() < 0) {
-    return this->get_velocity() + v_diff;
-  } else if (v_b.norm() > v_max.norm() && v_b.get_x() > 0 && v_b.get_y() < 0) {
-    return this->get_velocity() - v_d;
-  } else if (v_b.norm() > v_max.norm() && v_b.get_x() < 0 && v_b.get_y() > 0) {
-    return this->get_velocity() + v_d;
-  } else {
-    return this->get_velocity();
-  }
+  x_b += delta_x;
 }
+
+void Boid::update_velocity(const Vector& delta_v)
+{
+  v_b += delta_v;
+};
+
+void Boid::speed_limit(float max_speed)
+{
+  float speed = this->get_velocity().norm();
+  if (speed > max_speed) {
+    v_b = v_b * (max_speed/speed);
+  };
+}
+
 }; // namespace pf

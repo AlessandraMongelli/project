@@ -14,26 +14,28 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist, float ali
         std::vector<pf::Boid> neighbors = boid.Neighboring(boids, separation_dist);
 
         // Calculate separation, alignment, and cohesion behaviors
-        pf::Vector separation = boid.Separation(neighbors, 25.0f, 1.0f);  // Example parameters
+        pf::Vector separation = boid.Separation(neighbors, 30.0f, 3.0f);  // Example parameters
         pf::Vector alignment = boid.Alignment(neighbors, alignment_factor);
         pf::Vector cohesion = boid.Cohesion(neighbors, cohesion_factor);
 
         // Update the velocity by combining the behaviors
-        pf::Vector new_velocity = boid.get_velocity() + separation + alignment + cohesion;
+        pf::Vector delta_v = separation + alignment + cohesion;
+
+        // Update and clamp velocity
+        boid.update_velocity(delta_v);
+        boid.speed_limit(3.0f);  // You can tweak this max speed
 
         // Update boid's position based on the new velocity
-        pf::Vector new_position = boid.get_position() + new_velocity;
+        boid.update_position(boid.get_velocity());
+        pf::Vector pos = boid.get_position();
 
-        std::cout << "New position: " << new_position.get_x() << ", " << new_position.get_y() << std::endl;
+        std::cout << "New position: " << pos.get_x() << ", " << pos.get_y() << std::endl;
         // Screen wrapping behavior (boids will reappear on the other side of the window)
-        if (new_position.get_x() < 0) new_position.set_x(800);
-        if (new_position.get_y() < 0) new_position.set_y(600);
-        if (new_position.get_x() >= 800) new_position.set_x(0);
-        if (new_position.get_y() >= 600) new_position.set_y(0);
-
-        // Update the boid with the new position and velocity
-        boid = pf::Boid(new_position, new_velocity, boid.get_view_angle());
-    }
+        if (pos.get_x() < 0) pos.set_x(800);
+        if (pos.get_y() < 0) pos.set_y(600);
+        if (pos.get_x() >= 800) pos.set_x(0);
+        if (pos.get_y() >= 600) pos.set_y(0);
+ }
 }
 
 int main() {
@@ -42,8 +44,8 @@ int main() {
 
     // Create some boids with random positions and velocities
     std::vector<pf::Boid> boids;
-    for (int i = 0; i < 50; ++i) {
-        pf::Vector pos(rand() % 800, rand() % 600);  // Random positions
+    for (int i = 0; i < 30; ++i) {
+        pf::Vector pos(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);  // Random positions
         pf::Vector vel((rand() % 20 - 10) * 0.1f, (rand() % 20 - 10) * 0.1f);  // Random velocities
         boids.emplace_back(pos, vel, 3.14f / 2);  // Random initial view angle
     }
@@ -58,7 +60,7 @@ int main() {
         window.clear(sf::Color::Black);
 
         // Update boids' positions and velocities based on flocking behavior
-        update_boids(boids, 30.0f, 1.0f, 1.0f);  // You can tune these parameters
+        update_boids(boids, 40.0f, 0.03f, 0.01f);  // You can tune these parameters
 
         // Draw each boid as a triangle
         for (auto& boid : boids) {
