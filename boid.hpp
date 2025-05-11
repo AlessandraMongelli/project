@@ -19,18 +19,18 @@ class Boid
   Vector get_position() const;
   Vector get_velocity() const;
   float get_view_angle() const;
-  float get_other_angle(const Boid&) const;
-  
+  float get_others_angle(const Boid&) const;
+
   std::vector<Boid> neighboring(const std::vector<Boid>&, float d);
   Vector separation(const std::vector<Boid>&, float ds, float s) const;
   Vector alignment(const std::vector<Boid>&, float a) const;
   Vector cohesion(const std::vector<Boid>&, float c) const;
 
-  void speed_limit(float max_speed);
+  void speed_limit(float max_speed, float min_speed);
   void update_velocity(const Vector&);
   void update_position(const Vector&);
-  void rotate_angle();
-  void edges_behavior(const float, const float);
+  float rotate_angle() const;
+  void edges_behavior(const float max_width, const float max_height);
 };
 } // namespace pf
 

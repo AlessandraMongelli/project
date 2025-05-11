@@ -59,14 +59,14 @@ Vector Vector::operator*(float c) const
 
 float Vector::distance(const Vector& w) const
 {
-  const float dist = std::sqrt(std::pow(x_ - w.x_, 2) + std::pow(y_ - w.y_, 2));
+  const float dist = sqrt(pow(x_ - w.x_, 2) + pow(y_ - w.y_, 2));
   assert(dist >= 0.);
   return dist;
 }
 
 float Vector::norm() const
 {
-  const float norm = std::sqrt(std::pow(x_, 2) + std::pow(y_, 2));
+  const float norm = sqrt(pow(x_, 2) + pow(y_, 2));
   assert(norm >= 0.);
   return norm;
 };

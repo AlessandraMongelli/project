@@ -44,14 +44,15 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist,
                  "deviazione standard è "
               << medium_vel << " ± " << dev_vel << '\n';
 
-    std::cout << "Updating boid at position: " << boid.get_position().get_x()
-              << ", " << boid.get_position().get_y() << std::endl;
+    // std::cout << "Updating boid at position: " << boid.get_position().get_x()
+    //          << ", " << boid.get_position().get_y() << std::endl;
+
     // Find neighboring boids within a specific distance
     std::vector<pf::Boid> neighbors = boid.neighboring(boids, separation_dist);
 
     // Calculate separation, alignment, and cohesion behaviors
     pf::Vector separation =
-        boid.separation(neighbors, 30.0f, 3.0f); // Example parameters
+        boid.separation(neighbors, 8.0f, 0.05f); // Example parameters
     pf::Vector alignment = boid.alignment(neighbors, alignment_factor);
     pf::Vector cohesion  = boid.cohesion(neighbors, cohesion_factor);
 
@@ -60,14 +61,14 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist,
 
     // Update and clamp velocity
     boid.update_velocity(delta_v);
-    boid.speed_limit(3.0f); // You can tweak this max speed
+    boid.speed_limit(3.0f, 1.5f); // You can tweak this max speed
 
     // Update boid's position based on the new velocity
     boid.update_position(boid.get_velocity());
     pf::Vector pos = boid.get_position();
 
-    std::cout << "New position: " << pos.get_x() << ", " << pos.get_y()
-              << std::endl;
+    // std::cout << "New position: " << pos.get_x() << ", " << pos.get_y()
+    //          << std::endl;
     boid.edges_behavior(800, 600);
   }
 }
@@ -97,7 +98,7 @@ int main()
     window.clear(sf::Color::Black);
 
     // Update boids' positions and velocities based on flocking behavior
-    update_boids(boids, 40.0f, 0.03f, 0.03f); // You can tune these parameters
+    update_boids(boids, 40.0f, 0.05f, 0.005f); // You can tune these parameters
 
     // Draw each boid as a triangle
     for (auto& boid : boids) {
@@ -112,9 +113,7 @@ int main()
       shape.setPosition(pos.get_x(), pos.get_y());
 
       // Optionally rotate based on velocity direction
-      pf::Vector vel = boid.get_velocity();
-      float angle    = std::atan2(vel.get_y(), vel.get_x()) * 180.f / 3.14159f;
-      shape.setRotation(angle);
+      shape.setRotation(boid.rotate_angle());
 
       // Draw the boid
       window.draw(shape);

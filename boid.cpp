@@ -35,7 +35,7 @@ float Boid::get_view_angle() const
   return view_angle;
 };
 
-float Boid::get_other_angle(const Boid& boid) const
+float Boid::get_others_angle(const Boid& boid) const
 {
   float relative_x = std::abs(x_b.get_x() - boid.get_position().get_x());
   float relative_y = std::abs(x_b.get_y() - boid.get_position().get_y());
@@ -50,7 +50,7 @@ std::vector<Boid> Boid::neighboring(const std::vector<Boid>& boids, float d)
     if (x_b == boids[i].get_position()) {
       continue;
     } else if (x_b.distance(boids[i].get_position()) < d
-               && get_other_angle(boids[i]) < view_angle) {
+               && get_others_angle(boids[i]) < view_angle) {
       neighbors.push_back(boids[i]);
     }
   }
@@ -92,12 +92,15 @@ Vector Boid::cohesion(const std::vector<Boid>& neighbors, float c) const
   return (x_c - this->get_position()) * c;
 }
 
-void Boid::speed_limit(float max_speed)
+void Boid::speed_limit(float max_speed, float min_speed)
 {
   float speed = this->get_velocity().norm();
   if (speed > max_speed) {
     v_b = v_b * (max_speed / speed);
   };
+  if (speed < min_speed) {
+    v_b = v_b * (min_speed / speed);
+  }
 }
 
 void Boid::update_position(const Vector& delta_x)
@@ -108,6 +111,12 @@ void Boid::update_position(const Vector& delta_x)
 void Boid::update_velocity(const Vector& delta_v)
 {
   v_b += delta_v;
+};
+
+float Boid::rotate_angle() const
+{
+  const float angle = atan2(v_b.get_y(), v_b.get_x()) * 180.0f / M_PI;
+  return angle + 90.0f;
 };
 
 void Boid::edges_behavior(const float width, const float height)

@@ -1,46 +1,58 @@
-
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
 project(progettopf VERSION 0.1.0)
 
 # abilita il supporto per i test, tra cui l'opzione BUILD_TESTING usata sotto
 include(CTest)
 
+# esporta il compilation database, utile per altri strumenti, a partire dall'editor
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# richiedi l'uso di C++17, senza estensioni non-standard offerte dal compilatore usato 
-set(CMAKE_CXX_STANDARD 17)
+# richiedi l'uso di C++20 (volendo anche C++23), senza estensioni non-standard offerte dal compilatore usato
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # abilita warning
 string(APPEND CMAKE_CXX_FLAGS
       " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
-      " -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast")
+      " -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast"
+      " -fno-omit-frame-pointer")
 
-      # Trova SFML
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+# abilita asserzioni della standard library
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  string(APPEND CMAKE_CXX_FLAGS " -D_GLIBCXX_ASSERTIONS")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  string(APPEND CMAKE_CXX_FLAGS " -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE")
+endif()
 
-add_executable(boids boid.cpp main.cpp flock.cpp vector.cpp)
+# abilita address sanitizer e undefined-behaviour sanitizer in Debug mode
+string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address,undefined")
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  string(APPEND CMAKE_CXX_FLAGS " -D_GLIBCXX_SANITIZE_STD_ALLOCATOR")
+endif()
+string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined")
 
-# Aggiungi SFML alle librerie da collegare
-target_link_libraries(boids PRIVATE sfml-graphics sfml-window sfml-system)
+# se usato, richiedi il componente graphics della libreria SFML (versione 2.6 in Ubuntu 24.04)
+find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
-# abilita asserzioni di debug (in gcc), l'address sanitizer e l'undefined-behaviour sanitizer in debug mode
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
-string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
+# dichiara un eseguibile chiamato "progetto", prodotto a partire dai file sorgente indicati
+# sostituire "progetto" con il nome del proprio eseguibile e i file sorgente con i propri (con nomi sensati!)
+add_executable(boids main.cpp vector.cpp boid.cpp)
+# nel caso si usi SFML. analogamente per eventuali altre librerie
+target_link_libraries(boids PRIVATE sfml-graphics)
 
-# se il testing e' abilitato...
-#   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
+# aggiungere eventuali altri eseguibili
+
+# il testing e' abilitato di default
+# per disabilitarlo, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
 if (BUILD_TESTING)
 
-  # aggiungi l'eseguibile all.t
-   add_executable(vector.t vector.test.cpp vector.cpp)
-   add_executable(boid.t boid.test.cpp vector.cpp boid.cpp)
-  # Collega SFML agli eseguibili di test
-   target_link_libraries(boid.t PRIVATE sfml-graphics sfml-window sfml-system)
-   target_link_libraries(vector.t PRIVATE sfml-graphics sfml-window sfml-system)
-  # aggiungi l'eseguibile all.t alla lista dei test
-   add_test(NAME vector.t COMMAND vector.t)
-   add_test(NAME boid.t COMMAND boid.t)
+  # aggiungi l'eseguibile progetto.t
+  add_executable(vector.t vector.test.cpp vector.cpp)
+  add_executable(boid.t boid.test.cpp boid.cpp vector.cpp)
+  # aggiungi l'eseguibile progetto.t alla lista dei test
+  add_test(NAME vector.t COMMAND vector.t)
+  add_test(NAME boid.t COMMAND boid.t)
 
 endif()

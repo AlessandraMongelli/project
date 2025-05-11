@@ -15,8 +15,10 @@ TEST_CASE("Testing set_...()")
 {
   pf::Vector v(3.12f, 6.99f);
 
-  CHECK(v.set_x(6.11f) == doctest::Approx(6.11f));
-  CHECK(v.set_y(0.81f) == doctest::Approx(0.81f));
+  v.set_x(6.11f);
+  v.set_y(0.81f);
+  CHECK(v.get_x() == doctest::Approx(6.11f));
+  CHECK(v.get_y() == doctest::Approx(0.81f));
 }
 
 TEST_CASE("Testing operator+")
