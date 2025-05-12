@@ -11,13 +11,21 @@ namespace pf {
 Boid::Boid()
     : x_b(0., 0.)
     , v_b(0., 0.)
-    , view_angle(0.) {};
+//, view_angle(0.)
+{};
 
-Boid::Boid(Vector xb, Vector vb, float va)
+Boid::Boid(Vector xb, Vector vb) //, float va)
 {
-  x_b        = xb;
-  v_b        = vb;
-  view_angle = va;
+  x_b = xb;
+  v_b = vb;
+  // view_angle = va;
+  {
+    shape.setPointCount(3);
+    shape.setFillColor(sf::Color::White);
+    shape.setPoint(0, sf::Vector2f(0, -10));
+    shape.setPoint(1, sf::Vector2f(-5, 5));
+    shape.setPoint(2, sf::Vector2f(5, 5));
+  }
 };
 
 Vector Boid::get_position() const
@@ -30,28 +38,19 @@ Vector Boid::get_velocity() const
   return v_b;
 };
 
-float Boid::get_view_angle() const
+/* float Boid::get_view_angle() const
 {
   return view_angle;
-};
-
-float Boid::get_others_angle(const Boid& boid) const
-{
-  float relative_x = std::abs(x_b.get_x() - boid.get_position().get_x());
-  float relative_y = std::abs(x_b.get_y() - boid.get_position().get_y());
-
-  return std::atan(relative_y / relative_x);
-};
+}; */
 
 std::vector<Boid> Boid::neighboring(const std::vector<Boid>& boids, float d)
 {
   std::vector<Boid> neighbors;
-  for (int i = 0; i < boids.size(); i++) {
-    if (x_b == boids[i].get_position()) {
+  for (auto& boid : boids) {
+    if (x_b == boid.get_position()) {
       continue;
-    } else if (x_b.distance(boids[i].get_position()) < d
-               && get_others_angle(boids[i]) < view_angle) {
-      neighbors.push_back(boids[i]);
+    } else if (x_b.distance(boid.get_position()) < d) {
+      neighbors.push_back(boid);
     }
   }
   return neighbors;
@@ -61,11 +60,11 @@ Vector Boid::separation(const std::vector<Boid>& neighbors, float ds,
                         float s) const
 {
   Vector v_1(0., 0.);
-  for (int i = 0; i < neighbors.size(); i++) {
-    if ((x_b).distance(neighbors[i].get_position()) > ds) {
+  for (auto& boid : neighbors) {
+    if ((x_b).distance(boid.get_position()) > ds) {
       continue;
     } else {
-      v_1 += (x_b - neighbors[i].get_position()) * s;
+      v_1 += (x_b - boid.get_position()) * s;
     }
   }
 
@@ -75,8 +74,8 @@ Vector Boid::separation(const std::vector<Boid>& neighbors, float ds,
 Vector Boid::alignment(const std::vector<Boid>& neighbors, float a) const
 {
   Vector v_2(0., 0.);
-  for (int i = 0; i < neighbors.size(); i++) {
-    v_2 += neighbors[i].get_velocity() * (1.0f / neighbors.size());
+  for (auto& boid : neighbors) {
+    v_2 += boid.get_velocity() * (1.0f / static_cast<float>(neighbors.size()));
   }
 
   return (v_2 - this->get_velocity()) * a;
@@ -85,8 +84,8 @@ Vector Boid::alignment(const std::vector<Boid>& neighbors, float a) const
 Vector Boid::cohesion(const std::vector<Boid>& neighbors, float c) const
 {
   Vector x_c(0., 0.);
-  for (int i = 0; i < neighbors.size(); i++) {
-    x_c += neighbors[i].get_position() * (1.0f / neighbors.size());
+  for (auto& boid : neighbors) {
+    x_c += boid.get_position() * (1.0f / static_cast<float>(neighbors.size()));
   }
 
   return (x_c - this->get_position()) * c;
@@ -115,27 +114,39 @@ void Boid::update_velocity(const Vector& delta_v)
 
 float Boid::rotate_angle() const
 {
-  const float angle = atan2(v_b.get_y(), v_b.get_x()) * 180.0f / M_PI;
+  const float angle =
+      static_cast<float>(atan2(v_b.get_y(), v_b.get_x()) * 180.0f / M_PI);
   return angle + 90.0f;
 };
 
-void Boid::edges_behavior(const float width, const float height)
+void Boid::edges_behavior(const float leftmargin, const float rightmargin,
+                          const float topmargin, const float bottommargin,
+                          const float t)
 {
-  if (x_b.get_x() < 0) {
-    x_b.set_x(width);
+  if (x_b.get_x() < leftmargin) {
+    v_b.set_x(v_b.get_x() + t);
   }
 
-  if (x_b.get_x() > width) {
-    x_b.set_x(0);
+  if (x_b.get_x() > rightmargin) {
+    v_b.set_x(v_b.get_x() - t);
   }
 
-  if (x_b.get_y() < 0) {
-    x_b.set_y(height);
+  if (x_b.get_y() > topmargin) {
+    v_b.set_y(v_b.get_y() - t);
   }
 
-  if (x_b.get_y() > height) {
-    x_b.set_y(0);
+  if (x_b.get_y() < bottommargin) {
+    v_b.set_y(v_b.get_y() + t);
   }
 };
+
+void Boid::draw(sf::RenderWindow& window)
+{
+  shape.setPosition(x_b.get_x(), x_b.get_y());
+
+  shape.setRotation(rotate_angle());
+
+  window.draw(shape);
+}
 
 }; // namespace pf

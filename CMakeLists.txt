@@ -51,6 +51,7 @@ if (BUILD_TESTING)
   # aggiungi l'eseguibile progetto.t
   add_executable(vector.t vector.test.cpp vector.cpp)
   add_executable(boid.t boid.test.cpp boid.cpp vector.cpp)
+  target_link_libraries(boid.t PRIVATE sfml-graphics)
   # aggiungi l'eseguibile progetto.t alla lista dei test
   add_test(NAME vector.t COMMAND vector.t)
   add_test(NAME boid.t COMMAND boid.t)

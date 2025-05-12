@@ -9,7 +9,6 @@
 void update_boids(std::vector<pf::Boid>& boids, float separation_dist,
                   float alignment_factor, float cohesion_factor)
 {
-  for (auto& boid : boids) {
     float sum_dist  = 0.0f;
     float sum_dist2 = 0.0f;
     for (int i = 0; i < boids.size(); ++i) {
@@ -43,16 +42,13 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist,
               << "La velocità media dei boids con la sua rispettiva '\n' "
                  "deviazione standard è "
               << medium_vel << " ± " << dev_vel << '\n';
-
-    // std::cout << "Updating boid at position: " << boid.get_position().get_x()
-    //          << ", " << boid.get_position().get_y() << std::endl;
-
-    // Find neighboring boids within a specific distance
+    
+    for (auto& boid : boids) {
     std::vector<pf::Boid> neighbors = boid.neighboring(boids, separation_dist);
 
     // Calculate separation, alignment, and cohesion behaviors
     pf::Vector separation =
-        boid.separation(neighbors, 8.0f, 0.05f); // Example parameters
+        boid.separation(neighbors, 8.0f, 0.08f); // Example parameters
     pf::Vector alignment = boid.alignment(neighbors, alignment_factor);
     pf::Vector cohesion  = boid.cohesion(neighbors, cohesion_factor);
 
@@ -61,15 +57,12 @@ void update_boids(std::vector<pf::Boid>& boids, float separation_dist,
 
     // Update and clamp velocity
     boid.update_velocity(delta_v);
-    boid.speed_limit(3.0f, 1.5f); // You can tweak this max speed
-
+    boid.speed_limit(3.0f, 1.5f); 
+    
     // Update boid's position based on the new velocity
     boid.update_position(boid.get_velocity());
-    pf::Vector pos = boid.get_position();
 
-    // std::cout << "New position: " << pos.get_x() << ", " << pos.get_y()
-    //          << std::endl;
-    boid.edges_behavior(800, 600);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 0.2f);
   }
 }
 
@@ -78,14 +71,11 @@ int main()
   sf::RenderWindow window(sf::VideoMode(800, 600), "Boids Simulation");
   window.setFramerateLimit(60);
 
-  // Create some boids with random positions and velocities
   std::vector<pf::Boid> boids;
   for (int i = 0; i < 30; ++i) {
-    pf::Vector pos(400 + rand() % 100 - 50,
-                   300 + rand() % 100 - 50); // Random positions
-    pf::Vector vel((rand() % 20 - 10) * 0.1f,
-                   (rand() % 20 - 10) * 0.1f); // Random velocities
-    boids.emplace_back(pos, vel, 3.14f / 2);   // Random initial view angle
+    pf::Vector pos(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
+    pf::Vector vel((rand() % 20 - 10) * 0.1f, (rand() % 20 - 10) * 0.1f);
+    boids.emplace_back(pos, vel);
   }
 
   while (window.isOpen()) {
@@ -97,26 +87,12 @@ int main()
 
     window.clear(sf::Color::Black);
 
-    // Update boids' positions and velocities based on flocking behavior
-    update_boids(boids, 40.0f, 0.05f, 0.005f); // You can tune these parameters
+    // Update boids
+    update_boids(boids, 40.0f, 0.05f, 0.005f);
 
-    // Draw each boid as a triangle
+    // Draw boids
     for (auto& boid : boids) {
-      sf::ConvexShape shape(3); // Triangle to represent boid direction
-      shape.setFillColor(sf::Color::White);
-      shape.setPoint(0, sf::Vector2f(0, -10)); // Top point of the triangle
-      shape.setPoint(1, sf::Vector2f(-5, 5));  // Left bottom point
-      shape.setPoint(2, sf::Vector2f(5, 5));   // Right bottom point
-
-      // Get position and set it to the shape
-      pf::Vector pos = boid.get_position();
-      shape.setPosition(pos.get_x(), pos.get_y());
-
-      // Optionally rotate based on velocity direction
-      shape.setRotation(boid.rotate_angle());
-
-      // Draw the boid
-      window.draw(shape);
+      boid.draw(window);
     }
 
     window.display();
