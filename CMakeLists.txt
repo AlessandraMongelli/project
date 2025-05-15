@@ -38,7 +38,7 @@ find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 # dichiara un eseguibile chiamato "progetto", prodotto a partire dai file sorgente indicati
 # sostituire "progetto" con il nome del proprio eseguibile e i file sorgente con i propri (con nomi sensati!)
-add_executable(boids main.cpp vector.cpp boid.cpp)
+add_executable(boids main.cpp vector.cpp boid.cpp flock.cpp)
 # nel caso si usi SFML. analogamente per eventuali altre librerie
 target_link_libraries(boids PRIVATE sfml-graphics)
 
@@ -51,9 +51,12 @@ if (BUILD_TESTING)
   # aggiungi l'eseguibile progetto.t
   add_executable(vector.t vector.test.cpp vector.cpp)
   add_executable(boid.t boid.test.cpp boid.cpp vector.cpp)
+  add_executable(flock.t flock.test.cpp flock.cpp boid.cpp vector.cpp)
   target_link_libraries(boid.t PRIVATE sfml-graphics)
+  target_link_libraries(flock.t PRIVATE sfml-graphics)
   # aggiungi l'eseguibile progetto.t alla lista dei test
   add_test(NAME vector.t COMMAND vector.t)
   add_test(NAME boid.t COMMAND boid.t)
+  add_test(NAME flock.t COMMAND flock.t)
 
 endif()

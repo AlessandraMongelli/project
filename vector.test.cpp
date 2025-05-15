@@ -78,8 +78,6 @@ TEST_CASE("Testing operator ==")
 {
   const pf::Vector v{2.0f, 1.3f};
   const pf::Vector w{2.0f, 1.3f};
-  
-  CHECK(v==w);
+
+  CHECK(v == w);
 }
-
-

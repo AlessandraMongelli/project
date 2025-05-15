@@ -11,22 +11,30 @@ namespace pf {
 Boid::Boid()
     : x_b(0., 0.)
     , v_b(0., 0.)
-//, view_angle(0.)
-{};
+    , is_predator(0) {};
 
-Boid::Boid(Vector xb, Vector vb) //, float va)
+Boid::Boid(Vector xb, Vector vb, bool predator)
 {
-  x_b = xb;
-  v_b = vb;
-  // view_angle = va;
+  x_b         = xb;
+  v_b         = vb;
+  is_predator = predator;
+
   {
     shape.setPointCount(3);
+
     shape.setFillColor(sf::Color::White);
     shape.setPoint(0, sf::Vector2f(0, -10));
     shape.setPoint(1, sf::Vector2f(-5, 5));
     shape.setPoint(2, sf::Vector2f(5, 5));
+
+    shape.setFillColor(is_predator ? sf::Color::Red : sf::Color::White);
   }
 };
+
+void Boid::set_predator(bool value)
+{
+  is_predator = value;
+}
 
 Vector Boid::get_position() const
 {
@@ -38,10 +46,15 @@ Vector Boid::get_velocity() const
   return v_b;
 };
 
-/* float Boid::get_view_angle() const
+bool Boid::get_predator() const
 {
-  return view_angle;
-}; */
+  return is_predator;
+}
+
+bool Boid::operator==(const Boid& boid) const
+{
+  return x_b == boid.get_position();
+}
 
 std::vector<Boid> Boid::neighboring(const std::vector<Boid>& boids, float d)
 {
@@ -138,7 +151,26 @@ void Boid::edges_behavior(const float leftmargin, const float rightmargin,
   if (x_b.get_y() < bottommargin) {
     v_b.set_y(v_b.get_y() + t);
   }
-};
+}; 
+
+/* void Boid::edges_behavior(const float width, const float height)
+{
+  if (x_b.get_x() < 0) {
+    x_b.set_x(width);
+  }
+
+  if (x_b.get_x() > width) {
+    x_b.set_x(0);
+  }
+
+  if (x_b.get_y() > height) {
+    x_b.set_y(0);
+  }
+
+  if (x_b.get_y() < 0) {
+    x_b.set_y(height);
+  }
+}; */
 
 void Boid::draw(sf::RenderWindow& window)
 {
