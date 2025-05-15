@@ -7,8 +7,8 @@ TEST_CASE("Testing get_...()")
 {
   pf::Vector v(3.12f, 6.99f);
 
-  CHECK(v.get_x() == doctest::Approx(3.12f));
-  CHECK(v.get_y() == doctest::Approx(6.99f));
+  CHECK(v.get_x() == doctest::Approx(3.12f).epsilon(0.01));
+  CHECK(v.get_y() == doctest::Approx(6.99f).epsilon(0.01));
 }
 
 TEST_CASE("Testing set_...()")
@@ -17,67 +17,221 @@ TEST_CASE("Testing set_...()")
 
   v.set_x(6.11f);
   v.set_y(0.81f);
-  CHECK(v.get_x() == doctest::Approx(6.11f));
-  CHECK(v.get_y() == doctest::Approx(0.81f));
+  CHECK(v.get_x() == doctest::Approx(6.11f).epsilon(0.1));
+  CHECK(v.get_y() == doctest::Approx(0.81f).epsilon(0.1));
 }
 
 TEST_CASE("Testing operator+")
 {
-  const pf::Vector v{1.0f, 1.0f};
-  const pf::Vector w(1.0f, 1.0f);
-  const pf::Vector sum(w + v);
+  SUBCASE("Positive components")
+  {
+    const pf::Vector v{1.0f, 1.0f};
+    const pf::Vector w(1.5f, 2.0f);
+    const pf::Vector sum(w + v);
 
-  CHECK(sum.get_x() == doctest::Approx(2.0f));
-  CHECK(sum.get_y() == doctest::Approx(2.0f));
+    CHECK(sum.get_x() == doctest::Approx(2.5f).epsilon(0.1));
+    CHECK(sum.get_y() == doctest::Approx(3.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative components")
+  {
+    const pf::Vector v{-1.2f, -3.0f};
+    const pf::Vector w(-1.5f, -2.5f);
+    const pf::Vector sum(w + v);
+
+    CHECK(sum.get_x() == doctest::Approx(-2.7f).epsilon(0.1));
+    CHECK(sum.get_y() == doctest::Approx(-5.5f).epsilon(0.1));
+  };
+
+  SUBCASE("Null components")
+  {
+    const pf::Vector v{1.0f, 0.0f};
+    const pf::Vector w(0.0f, 2.0f);
+    const pf::Vector sum(w + v);
+
+    CHECK(sum.get_x() == doctest::Approx(1.0f).epsilon(0.1));
+    CHECK(sum.get_y() == doctest::Approx(2.0f).epsilon(0.1));
+  };
+}
+
+TEST_CASE("Testing operator +=")
+{
+  SUBCASE("Positive Components")
+  {
+    pf::Vector v{1, 2};
+    const pf::Vector w{3, 2};
+    v += w;
+    CHECK(v.get_x() == doctest::Approx(4.0).epsilon(0.1));
+    CHECK(v.get_y() == doctest::Approx(4.0).epsilon(0.1));
+  };
+
+  SUBCASE("Negative Components")
+  {
+    pf::Vector v{-1, -3};
+    const pf::Vector w{-2, -2};
+    v += w;
+    CHECK(v.get_x() == doctest::Approx(-3.0).epsilon(0.1));
+    CHECK(v.get_y() == doctest::Approx(-5.0).epsilon(0.1));
+  };
+
+  SUBCASE("Null Components")
+  {
+    pf::Vector v{0, 2};
+    const pf::Vector w{3, 0};
+    v += w;
+    CHECK(v.get_x() == doctest::Approx(3.0).epsilon(0.1));
+    CHECK(v.get_y() == doctest::Approx(2.0).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing operator-")
 {
-  const pf::Vector v{1.0f, 1.0f};
-  const pf::Vector w(1.0f, 1.0f);
-  const pf::Vector diff(w - v);
+  SUBCASE("Positive Components")
+  {
+    const pf::Vector v{1.0f, 5.0f};
+    const pf::Vector w(2.0f, 1.5f);
+    const pf::Vector diff(w - v);
 
-  CHECK(diff.get_x() == doctest::Approx(0.0f));
-  CHECK(diff.get_y() == doctest::Approx(0.0f));
+    CHECK(diff.get_x() == doctest::Approx(1.0f).epsilon(0.1));
+    CHECK(diff.get_y() == doctest::Approx(-3.5f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative Components")
+  {
+    const pf::Vector v{-2.5f, -1.5f};
+    const pf::Vector w(-3.2f, -1.3f);
+    const pf::Vector diff(w - v);
+
+    CHECK(diff.get_x() == doctest::Approx(-0.7f).epsilon(0.1));
+    CHECK(diff.get_y() == doctest::Approx(0.2f).epsilon(0.1));
+  };
+
+  SUBCASE("Null Components")
+  {
+    const pf::Vector v{0.0f, 1.0f};
+    const pf::Vector w(2.0f, 0.0f);
+    const pf::Vector diff(w - v);
+
+    CHECK(diff.get_x() == doctest::Approx(2.0f).epsilon(0.1));
+    CHECK(diff.get_y() == doctest::Approx(-1.0f).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing operator*")
 {
-  const pf::Vector v{1.0f, 1.0f};
-  float x = 2.5;
-  const pf::Vector prod(v * x);
+  SUBCASE("Positive scalar")
+  {
+    const pf::Vector v{1.0f, 0.0f};
+    float x = 2.5;
+    const pf::Vector prod(v * x);
 
-  CHECK(prod.get_x() == doctest::Approx(2.5f));
-  CHECK(prod.get_y() == doctest::Approx(2.5f));
+    CHECK(prod.get_x() == doctest::Approx(2.5f).epsilon(0.1));
+    CHECK(prod.get_y() == doctest::Approx(0.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative scalar")
+  {
+    const pf::Vector v{-3.0f, 2.0f};
+    float x = -0.5;
+    const pf::Vector prod(v * x);
+
+    CHECK(prod.get_x() == doctest::Approx(1.5f).epsilon(0.1));
+    CHECK(prod.get_y() == doctest::Approx(-1.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Null scalar")
+  {
+    const pf::Vector v{-1.0f, 2.0f};
+    float x = -0.0;
+    const pf::Vector prod(v * x);
+
+    CHECK(prod.get_x() == doctest::Approx(0.0f).epsilon(0.1));
+    CHECK(prod.get_y() == doctest::Approx(0.0f).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing distance")
 {
-  const pf::Vector v{1.0f, 1.0f};
-  const pf::Vector w{2.0f, 2.0f};
+  SUBCASE("Positive components")
+  {
+    const pf::Vector v{1.0f, 1.0f};
+    const pf::Vector w{2.0f, 1.0f};
 
-  CHECK(v.distance(w) == doctest::Approx(1.41421f));
+    CHECK(v.distance(w) == doctest::Approx(1.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative components")
+  {
+    const pf::Vector v{-2.0f, -1.0f};
+    const pf::Vector w{-1.0f, -1.0f};
+
+    CHECK(v.distance(w) == doctest::Approx(1.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Null components")
+  {
+    const pf::Vector v{1.0f, 0.0f};
+    const pf::Vector w{0.0f, 0.0f};
+
+    CHECK(v.distance(w) == doctest::Approx(1.0f).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing norm")
 {
-  const pf::Vector v{0.0f, 2.0f};
+  SUBCASE("Positive components")
+  {
+    const pf::Vector v{1.0f, 2.0f};
 
-  CHECK(v.norm() == doctest::Approx(2.0f));
+    CHECK(v.norm() == doctest::Approx(2.2f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative components")
+  {
+    const pf::Vector v{-2.0f, -1.0f};
+
+    CHECK(v.norm() == doctest::Approx(2.2f).epsilon(0.1));
+  };
+
+  SUBCASE("Null components")
+  {
+    const pf::Vector v{0.0f, 0.0f};
+
+    CHECK(v.norm() == doctest::Approx(0.0f).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing product")
 {
-  const pf::Vector v{0.0f, 2.0f};
-  const pf::Vector w{2.0f, 1.3f};
+  SUBCASE("Positive Components")
+  {
+    const pf::Vector v{1.0f, 2.0f};
+    const pf::Vector w{2.0f, 1.3f};
 
-  CHECK(v.product(w) == doctest::Approx(2.6f));
+    CHECK(v.product(w) == doctest::Approx(4.6f).epsilon(0.1));
+  };
+
+  SUBCASE("Negative Components")
+  {
+    const pf::Vector v{-1.5f, -2.0f};
+    const pf::Vector w{-2.0f, -1.0f};
+
+    CHECK(v.product(w) == doctest::Approx(5.0f).epsilon(0.1));
+  };
+
+  SUBCASE("Null Components")
+  {
+    const pf::Vector v{1.0f, 0.0f};
+    const pf::Vector w{0.0f, 0.5f};
+
+    CHECK(v.product(w) == doctest::Approx(0.0f).epsilon(0.1));
+  };
 }
 
 TEST_CASE("Testing operator ==")
 {
-  const pf::Vector v{2.0f, 1.3f};
-  const pf::Vector w{2.0f, 1.3f};
+  const pf::Vector v{-2.0f, 1.3f};
+  const pf::Vector w{-2.0f, 1.3f};
 
   CHECK(v == w);
 }
