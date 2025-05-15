@@ -7,7 +7,6 @@
 TEST_CASE("Testing Boid Class")
 {
   const pf::Vector xb1(0., 0.);
-<<<<<<< HEAD
   const pf::Vector vb1(5., -1.);
   // const float va1(180.0f);
 
@@ -22,26 +21,10 @@ TEST_CASE("Testing Boid Class")
   const pf::Vector xb4(-1.0, -0.5);
   const pf::Vector vb4(-0.25, -2.0);
 
-  pf::Boid boid1(xb1, vb1);
-  pf::Boid boid2(xb2, vb2);
-  pf::Boid boid3(xb3, vb3);
-  pf::Boid boid4(xb4, vb4);
-=======
-  const pf::Vector vb1(0., 0.);
-  // const float va1(180.0f);
-
-  const pf::Vector xb2(0.5, 0.5);
-  const pf::Vector vb2(0.5, 0.5);
-  // const float va2(180.0f);
-
-  const pf::Vector xb3(1.0, 1.0);
-  const pf::Vector vb3(1.0, 1.0);
-  // const float va3(180.0f);
-
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
   pf::Boid boid3(xb3, vb3, 0);
->>>>>>> 43f97454f18e51e32c4a74d19c7cfcbf0c01e772
+  pf::Boid boid4(xb4, vb4, 0);
 
   std::vector<pf::Boid> boids      = {boid1, boid2, boid3, boid4};
   std::vector<pf::Boid> neighbors1 = boid1.neighboring(boids, 2.5f);
