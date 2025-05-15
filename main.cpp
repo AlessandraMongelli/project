@@ -91,11 +91,11 @@ int main()
     // print_boid_statistics(flock1);
 
     // Update flock (predator is handled separately inside flock_update)
-    flock1.flock_update(60.0f, 8.0f, 0.08f, 0.05f, 0.005f, 3.0f, 1.5f, 30.0f);
+    flock1.flock_update(60.0f, 9.0f, 0.08f, 0.05f, 0.0025f, 3.0f, 1.5f, 30.0f);
 
     // flock2.flock_update(40.0f, 9.0f, 0.08f, 0.05f, 0.009f, 3.0f, 1.5f);
 
-    flock1.predators_update(40.0f, 3.0f, 1.5f, 0.5f);
+    flock1.predators_update(60.0f, 3.0f, 1.5f, 0.5f);
 
     // Draw boids
     for (const auto& boid :

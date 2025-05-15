@@ -121,7 +121,7 @@ void Flock::predators_update(float d, float max_speed, float min_speed,
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed, min_speed);
     boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 0.5f);
-    //boid.edges_behavior(800.0f, 600.0f);
+    // boid.edges_behavior(800.0f, 600.0f);
     boid.update_position(boid.get_velocity());
   }
 }
@@ -129,17 +129,28 @@ void Flock::predators_update(float d, float max_speed, float min_speed,
 void Flock::flock_update(float d, float ds, float s, float a, float c,
                          float max_speed, float min_speed, float ap)
 {
-  std::vector<Boid> boids;
-  boids.reserve(flock_.size() + predators_.size());
-  boids.insert(boids.end(), flock_.begin(), flock_.end());
-  boids.insert(boids.end(), predators_.begin(), predators_.end());
+  // Avoid copies: create a vector of references to all boids
+  std::vector<std::reference_wrapper<const Boid>> all_boids;
+  all_boids.reserve(flock_.size() + predators_.size());
+
+  for (const auto& b : flock_)
+    all_boids.push_back(std::cref(b));
+  for (const auto& p : predators_)
+    all_boids.push_back(std::cref(p));
 
   for (auto& boid : flock_) {
-    std::vector<Boid> flock_neighbors = boid.neighboring(boids, d);
+    std::vector<Boid> neighbors; // Keep using real Boids for compatibility
+    for (const Boid& other : all_boids) {
+      if (boid.get_position() == other.get_position())
+        continue;
+      if (boid.get_position().distance(other.get_position()) < d) {
+        neighbors.push_back(other); // Still copying here, optional to refactor
+      }
+    }
 
-    Vector delta_v = flock_separation(boid, flock_neighbors, ds, s)
-                   + flock_alignment(boid, flock_neighbors, a)
-                   + flock_cohesion(boid, flock_neighbors, c)
+    Vector delta_v = flock_separation(boid, neighbors, ds, s)
+                   + flock_alignment(boid, neighbors, a)
+                   + flock_cohesion(boid, neighbors, c)
                    + avoid_predators(boid, ap);
 
     boid.update_velocity(delta_v);
