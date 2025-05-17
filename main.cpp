@@ -1,5 +1,6 @@
 #include "flock.hpp"
 #include <SFML/Graphics.hpp>
+#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
@@ -10,12 +11,14 @@
 
 int main()
 {
-  std::cout << "Input number of boids (from 0 to 100): \n";
+  std::cout << "Input number of boids (from 1 to 50): \n";
   int nb;
   std::cin >> nb;
+  assert(std::cin.fail() || nb < 1 || nb > 50);
   std::cout << "Input number of predators (from 0 to 10): \n";
   int np;
   std::cin >> np;
+  assert(std::cin.fail() || nb < 1 || nb > 10);
   std::cout << "Input range of view of the boids: \n";
   float d;
   std::cin >> d;

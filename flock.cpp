@@ -80,30 +80,36 @@ Vector Flock::avoid_predators(const Boid& boid)
   Vector steer(0., 0.);
   Vector p = boid.get_position();
   for (auto& predator : predators_) {
-    if (predator.get_position().distance(p) < d_)
+    if (predator.get_position().distance(p) < d_
+        && predator.get_position().distance(p) > ds_) {
       steer += (p - predator.get_position())
-             * (1.0f / predator.get_position().distance(p)) * 10.0f;
+             * (1.0f / predator.get_position().distance(p)) * 15.0f;
+    } else if (predator.get_position().distance(p) < ds_
+               && predator.get_position().distance(p) != 0) {
+      steer += (p - predator.get_position())
+             * (1.0f / predator.get_position().distance(p)) * 25.0f;
+    }
   }
-
   return steer;
 }
 
 Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 {
   Vector vp(0., 0.);
-  Vector pos = boid.get_position();
+  Vector position = boid.get_position();
 
-  auto compare_distances = [&pos](const Boid& boid1, const Boid& boid2) {
-    return boid1.get_position().distance(pos)
-         < boid2.get_position().distance(pos);
+  auto compare_distances = [&position](const Boid& boid1, const Boid& boid2) {
+    return boid1.get_position().distance(position)
+         < boid2.get_position().distance(position);
   };
 
   auto closest =
       std::min_element(neighbors.begin(), neighbors.end(), compare_distances);
 
-  if (closest != neighbors.end() && (closest->get_position() - pos).norm() != 0) {
-    vp += (closest->get_position() - pos)
-        * (1.0f / (closest->get_position() - pos).norm()) * 10.0f;
+  if (closest != neighbors.end()
+      && (closest->get_position() - position).norm() != 0) {
+    vp += (closest->get_position() - position)
+        * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
   }
   return vp;
 }
@@ -116,7 +122,7 @@ void Flock::predators_update(float delta_t)
     Vector delta_v = chase_prey(boid, flock_neighbors);
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);
     // boid.edges_behavior(800.0f, 600.0f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
