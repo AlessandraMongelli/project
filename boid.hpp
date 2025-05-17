@@ -13,14 +13,18 @@ class Boid
  private:
   Vector x_b;
   Vector v_b;
-  sf::ConvexShape shape;
+  bool is_predator;
+  mutable sf::ConvexShape shape;
 
  public:
   Boid();
-  Boid(Vector, Vector);
+  Boid(Vector, Vector, bool);
+  
+  void set_predator(bool);
   
   Vector get_position() const;
   Vector get_velocity() const;
+  bool get_predator() const;
 
   bool operator==(const Boid&) const;
 
@@ -39,7 +43,7 @@ class Boid
                       const float t);
   // void edges_behavior(const float width, const float height);
 
-  void draw(sf::RenderWindow& window);
+  void draw(sf::RenderWindow& window) const;
 };
 } // namespace pf
 

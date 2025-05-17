@@ -40,23 +40,23 @@ int main()
   std::cout << '\n';
 
   sf::RenderWindow window(sf::VideoMode(800, 600), "Boids Simulation");
+  window.setFramerateLimit(60);
 
-  pf::Flock flock(d, ds, s, a, c, 3.0f, 1.5f);
+  pf::Flock flock(d, ds, s, a, c, 200.0f, 100.0f);
   std::vector<pf::Boid> boids1;
-  std::vector<pf::Boid> boids2;
-  std::vector<pf::Boid> boids;
+  std::vector<pf::Boid> predators1;
 
   // Create normal boids
   for (int i = 0; i < 30; ++i) {
     pf::Vector pos(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
     pf::Vector vel((rand() % 20 - 10) * 0.1f, (rand() % 20 - 10) * 0.1f);
-    boids1.emplace_back(pos, vel); // regular boid
+    boids1.emplace_back(pos, vel, false); // regular boid
   }
 
   // Create one predator boid
   pf::Vector predator_pos(400.f, 300.f);
-  pf::Vector predator_vel(1.0f, 0.0f);
-  pf::Boid predator(predator_pos, predator_vel); // is_predator = true
+  pf::Vector predator_vel(10.0f, 0.0f);
+  pf::Boid predator(predator_pos, predator_vel, true);
   boids1.push_back(predator);
 
   // Add all boids to their relative flock
@@ -75,8 +75,8 @@ int main()
     float delta_t = clock.restart().asSeconds();
 
     // Update flock and predator
-    flock.flock_update();
-    flock.predators_update();
+    flock.flock_update(delta_t);
+    flock.predators_update(delta_t);
 
     sf::Time time_passed = statistics_clock.getElapsedTime();
 
@@ -94,12 +94,12 @@ int main()
     window.clear(sf::Color::Black);
 
     // Draw boids and a predator
-    for (auto boid : flock.get_flock()) {
+    for (const auto& boid : flock.get_flock()) {
       boid.draw(window);
     }
 
-    for (auto predator : flock.get_predators()) {
-      predator.draw(window);
+    for (const auto& boid : flock.get_predators()) {
+      boid.draw(window);
     }
 
     window.display();

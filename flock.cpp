@@ -21,23 +21,27 @@ Flock::Flock(const float d, const float ds, const float s, const float a,
 void Flock::add_boids(const std::vector<Boid>& boids)
 {
   for (auto& boid : boids) {
-    flock_.push_back(boid);
+    if (boid.get_predator() == true) {
+      predators_.push_back(boid);
+    } else {
+      flock_.push_back(boid);
+    }
   }
 }
 
-void Flock::add_predators(const std::vector<Boid>& predators)
+/* void Flock::add_predators(const std::vector<Boid>& predators)
 {
   for (auto& predator : predators) {
     predators_.push_back(predator);
   }
-}
+} */
 
-std::vector<Boid> Flock::get_flock() const
+const std::vector<Boid>& Flock::get_flock() const
 {
   return flock_;
 };
 
-std::vector<Boid> Flock::get_predators() const
+const std::vector<Boid>& Flock::get_predators() const
 {
   return predators_;
 }
@@ -56,12 +60,18 @@ Vector Flock::flock_separation(const Boid& boid,
 Vector Flock::flock_alignment(const Boid& boid,
                               const std::vector<Boid>& neighbors) const
 {
+  if (boid.get_predator() == true) {
+    return {0., 0.};
+  }
   return boid.alignment(neighbors, a_);
 }
 
 Vector Flock::flock_cohesion(const Boid& boid,
                              const std::vector<Boid>& neighbors) const
 {
+  if (boid.get_predator() == true) {
+    return {0., 0.};
+  }
   return boid.cohesion(neighbors, c_);
 }
 
@@ -72,7 +82,7 @@ Vector Flock::avoid_predators(const Boid& boid)
   for (auto& predator : predators_) {
     if (predator.get_position().distance(p) < d_)
       steer += (p - predator.get_position())
-             * (1.0f / predator.get_position().distance(p));
+             * (1.0f / predator.get_position().distance(p)) * 10.0f;
   }
 
   return steer;
@@ -91,14 +101,14 @@ Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
   auto closest =
       std::min_element(neighbors.begin(), neighbors.end(), compare_distances);
 
-  if (closest != neighbors.end()) {
+  if (closest != neighbors.end() && (closest->get_position() - pos).norm() != 0) {
     vp += (closest->get_position() - pos)
-        * (1.0f / (closest->get_position() - pos).norm());
+        * (1.0f / (closest->get_position() - pos).norm()) * 10.0f;
   }
   return vp;
 }
 
-void Flock::predators_update()
+void Flock::predators_update(float delta_t)
 {
   for (auto& boid : predators_) {
     std::vector<Boid> flock_neighbors = boid.neighboring(flock_, d_);
@@ -106,13 +116,13 @@ void Flock::predators_update()
     Vector delta_v = chase_prey(boid, flock_neighbors);
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 0.5f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
     // boid.edges_behavior(800.0f, 600.0f);
-    boid.update_position(boid.get_velocity());
+    boid.update_position(boid.get_velocity() * delta_t);
   }
 }
 
-void Flock::flock_update()
+void Flock::flock_update(float delta_t)
 {
   // Avoid copies: create a vector of references to all boids
   std::vector<std::reference_wrapper<const Boid>> all_boids;
@@ -139,9 +149,9 @@ void Flock::flock_update()
 
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 0.5f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
     // boid.edges_behavior(800.0f, 600.0f);
-    boid.update_position(boid.get_velocity());
+    boid.update_position(boid.get_velocity() * delta_t);
   }
 }
 
