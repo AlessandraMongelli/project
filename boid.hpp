@@ -13,21 +13,18 @@ class Boid
  private:
   Vector x_b;
   Vector v_b;
-  bool is_predator;
   sf::ConvexShape shape;
 
  public:
   Boid();
-  Boid(Vector, Vector, bool);
-  void set_predator(bool);
-
+  Boid(Vector, Vector);
+  
   Vector get_position() const;
   Vector get_velocity() const;
 
-  bool get_predator() const;
   bool operator==(const Boid&) const;
 
-  std::vector<Boid> neighboring(const std::vector<Boid>&, float d);
+  std::vector<Boid> neighboring(const std::vector<Boid>&, float d) const;
   Vector separation(const std::vector<Boid>& neighbors, float ds,
                     float s) const;
   Vector alignment(const std::vector<Boid>& neighbors, float a) const;
@@ -39,7 +36,7 @@ class Boid
   float rotate_angle() const;
   void edges_behavior(const float leftmargin, const float rightmargin,
                       const float topmargin, const float bottommargin,
-                      const float t); 
+                      const float t);
   // void edges_behavior(const float width, const float height);
 
   void draw(sf::RenderWindow& window);

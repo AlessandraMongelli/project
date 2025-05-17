@@ -10,14 +10,12 @@ namespace pf {
 
 Boid::Boid()
     : x_b(0., 0.)
-    , v_b(0., 0.)
-    , is_predator(0) {};
+    , v_b(0., 0.) {};
 
-Boid::Boid(Vector xb, Vector vb, bool predator)
+Boid::Boid(Vector xb, Vector vb)
 {
-  x_b         = xb;
-  v_b         = vb;
-  is_predator = predator;
+  x_b = xb;
+  v_b = vb;
 
   {
     shape.setPointCount(3);
@@ -26,14 +24,7 @@ Boid::Boid(Vector xb, Vector vb, bool predator)
     shape.setPoint(0, sf::Vector2f(0, -10));
     shape.setPoint(1, sf::Vector2f(-5, 5));
     shape.setPoint(2, sf::Vector2f(5, 5));
-
-    shape.setFillColor(is_predator ? sf::Color::Red : sf::Color::White);
-  }
-};
-
-void Boid::set_predator(bool value)
-{
-  is_predator = value;
+  };
 }
 
 Vector Boid::get_position() const
@@ -46,17 +37,13 @@ Vector Boid::get_velocity() const
   return v_b;
 };
 
-bool Boid::get_predator() const
-{
-  return is_predator;
-}
-
 bool Boid::operator==(const Boid& boid) const
 {
   return x_b == boid.get_position();
 }
 
-std::vector<Boid> Boid::neighboring(const std::vector<Boid>& boids, float d)
+std::vector<Boid> Boid::neighboring(const std::vector<Boid>& boids,
+                                    float d) const
 {
   std::vector<Boid> neighbors;
   for (auto& boid : boids) {
@@ -151,7 +138,7 @@ void Boid::edges_behavior(const float leftmargin, const float rightmargin,
   if (x_b.get_y() < bottommargin) {
     v_b.set_y(v_b.get_y() + t);
   }
-}; 
+};
 
 /* void Boid::edges_behavior(const float width, const float height)
 {
