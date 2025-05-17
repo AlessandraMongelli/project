@@ -10,6 +10,12 @@
 
 int main()
 {
+  std::cout << "Input number of boids (from 0 to 100): \n";
+  int nb;
+  std::cin >> nb;
+  std::cout << "Input number of predators (from 0 to 10): \n";
+  int np;
+  std::cin >> np;
   std::cout << "Input range of view of the boids: \n";
   float d;
   std::cin >> d;
@@ -44,20 +50,22 @@ int main()
 
   pf::Flock flock(d, ds, s, a, c, 200.0f, 100.0f);
   std::vector<pf::Boid> boids1;
-  std::vector<pf::Boid> predators1;
 
-  // Create normal boids
-  for (int i = 0; i < 30; ++i) {
-    pf::Vector pos(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel((rand() % 20 - 10) * 0.1f, (rand() % 20 - 10) * 0.1f);
-    boids1.emplace_back(pos, vel, false); // regular boid
+  // Create n normal boids
+  for (int i = 0; i < nb; ++i) {
+    pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
+    pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 100.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    boids1.emplace_back(pos_b, vel_b, false); // regular boids
   }
 
-  // Create one predator boid
-  pf::Vector predator_pos(400.f, 300.f);
-  pf::Vector predator_vel(10.0f, 0.0f);
-  pf::Boid predator(predator_pos, predator_vel, true);
-  boids1.push_back(predator);
+  // Create n predators
+  for (int i = 0; i < np; ++i) {
+    pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
+    pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 100.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    boids1.emplace_back(pos_p, vel_p, true); // predators
+  }
 
   // Add all boids to their relative flock
   flock.add_boids(boids1);
