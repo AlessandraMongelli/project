@@ -21,6 +21,9 @@ TEST_CASE("Testing Boid Class")
   const pf::Vector xb4(-1.0, -0.5);
   const pf::Vector vb4(-0.25, -2.0);
 
+  const pf::Vector xb5(1., 2.);
+  const pf::Vector vb5(2., 3.);
+
   pf::Boid boid1(xb1, vb1);
   pf::Boid boid2(xb2, vb2);
   pf::Boid boid3(xb3, vb3);
@@ -118,5 +121,75 @@ TEST_CASE("Testing Boid Class")
     CHECK(boid3.get_velocity().get_y() == doctest::Approx(1.0f));
     CHECK(boid4.get_velocity().get_x() == doctest::Approx(-0.25f));
     CHECK(boid4.get_velocity().get_y() == doctest::Approx(-2.0f));
+  }
+
+  SUBCASE("Testing the speed limit method")
+  {
+    boid1.speed_limit(5.0, 1.0);
+    boid2.speed_limit(6, 3);
+    boid3.speed_limit(5, 1);
+    boid4.speed_limit(5, 3);
+    CHECK(boid1.get_velocity().norm() == doctest::Approx(4.999).epsilon(0.001));
+    CHECK(boid2.get_velocity().norm() == doctest::Approx(2.999).epsilon(0.001));
+    CHECK(boid3.get_velocity().norm() == doctest::Approx(3.162).epsilon(0.001));
+    CHECK(boid4.get_velocity().norm() == doctest::Approx(3.000).epsilon(0.001));
+  }
+
+  SUBCASE("Testing the update position method ")
+  {
+    const pf::Vector delta_x{1., -2.};
+    boid1.update_position(delta_x);
+    CHECK(boid1.get_position().get_x() == doctest::Approx(1.0).epsilon(0.1));
+    CHECK(boid1.get_position().get_y() == doctest::Approx(-2.0).epsilon(0.1));
+  }
+
+  SUBCASE("Testing the update velocity method ")
+  {
+    const pf::Vector delta_v{-0.5, 1.};
+    boid1.update_velocity(delta_v);
+    CHECK(boid1.get_velocity().get_x() == doctest::Approx(4.5).epsilon(0.1));
+    CHECK(boid1.get_velocity().get_y() == doctest::Approx(0.0).epsilon(0.1));
+  }
+
+  SUBCASE("Testing the rotate angle method ")
+  {
+    CHECK(boid1.rotate_angle() == doctest::Approx(78.690).epsilon(0.001));
+    CHECK(boid2.rotate_angle() == doctest::Approx(11.310).epsilon(0.001));
+    CHECK(boid3.rotate_angle() == doctest::Approx(108.435).epsilon(0.001));
+    CHECK(boid4.rotate_angle() == doctest::Approx(172.875).epsilon(0.001));
+  }
+
+  SUBCASE("Testing the edges behavior method ")
+  {
+    boid1.edges_behavior(-5., 5., 5., 1.5, 1.);
+    boid2.edges_behavior(2., 7., 0., -7., 1.);
+    boid3.edges_behavior(-5., 1., 5., -2., 2.);
+    CHECK(boid1.get_velocity().get_x() == doctest::Approx(5.).epsilon(0.1));
+    CHECK(boid1.get_velocity().get_y() == doctest::Approx(2.).epsilon(0.1));
+    CHECK(boid2.get_velocity().get_x() == doctest::Approx(0.5).epsilon(0.1));
+    CHECK(boid2.get_velocity().get_y() == doctest::Approx(1.).epsilon(0.1));
+    CHECK(boid3.get_velocity().get_x() == doctest::Approx(1.).epsilon(0.1));
+    CHECK(boid3.get_velocity().get_y() == doctest::Approx(1.).epsilon(0.1));
+  }
+}
+TEST_CASE("Testing == operator")
+{
+  SUBCASE("Equal component")
+  {
+    const pf::Vector xb{1., 2.};
+    const pf::Vector vb{2., 2.};
+    pf::Boid boid1(xb, vb);
+    pf::Boid boid2(xb, vb);
+    CHECK(boid1.operator==(boid2) == true);
+  }
+  SUBCASE("Non-equal component")
+  {
+    const pf::Vector xb1{1., 2.};
+    const pf::Vector vb1{2., 2.};
+    const pf::Vector xb2{0.5, 1.};
+    const pf::Vector vb2{3., 3.};
+    pf::Boid boid1(xb1, vb1);
+    pf::Boid boid2(xb2, vb2);
+    CHECK(boid1.operator==(boid2) == false);
   }
 }
