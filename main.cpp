@@ -5,35 +5,90 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <random>
+#include <sstream>
+#include <string>
 #include <thread>
 #include <vector>
+
+bool valid_int(const std::string& input, int& value)
+{
+  std::stringstream ss(input);
+  char leftover;
+
+  if (!(ss >> value) || (ss >> leftover)) {
+    return false;
+  }
+  return true;
+}
 
 int main()
 {
   std::cout << "Input number of boids (from 1 to 50): \n";
+  std::string boids;
   int nb;
-  std::cin >> nb;
-  assert(std::cin.fail() || nb < 1 || nb > 50);
+  std::getline(std::cin, boids);
+  if (!valid_int(boids, nb) || nb < 1 || nb > 50) {
+    std::cerr
+        << "Error: number of boids must be an integer between 1 and 50 \n";
+    return 1;
+  }
+
   std::cout << "Input number of predators (from 0 to 10): \n";
+  std::string predators;
   int np;
-  std::cin >> np;
-  assert(std::cin.fail() || nb < 1 || nb > 10);
-  std::cout << "Input range of view of the boids: \n";
+  std::getline(std::cin, predators);
+  if (!valid_int(predators, np) || np < 0 || np > 5) {
+    std::cerr
+        << "Error: number of predators must be an integer between 0 and 10 \n";
+    return 1;
+  }
+
+  std::cout
+      << "Input range of view of the boids (any number between 50 and 100): \n";
   float d;
   std::cin >> d;
-  std::cout << "Input protected range of the boids: \n";
+  if (d < 50.0f || d > 100.0f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input protected range of the boids (any number between 10 and "
+               "15): \n";
   float ds;
   std::cin >> ds;
-  std::cout << "Input protected range repulsion of the boids: \n";
+  if (ds < 10.0f || ds > 15.0f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input protected range repulsion of the boids (any number "
+               "between 0.1 and 0.8): \n";
   float s;
   std::cin >> s;
-  std::cout << "Input alignment parameter of the boids: \n";
+  if (s < 0.1f || s > 0.8f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input alignment parameter of the boids (any number between 0.1 "
+               "and 0.05): \n";
   float a;
   std::cin >> a;
-  std::cout << "Input cohesion parameter of the boids: \n";
+  if (a < 0.05f || a > 0.1f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input cohesion parameter of the boids (any number between "
+               "0.002 and 0.004): \n";
   float c;
   std::cin >> c;
+  if (c < 0.002f || c > 0.004f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
 
   sf::Clock delay_clock;
 
@@ -59,7 +114,7 @@ int main()
     pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
     pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 100.0f,
                      ((rand() % 20 - 10) * 0.1f) + 100.0f);
-    boids1.emplace_back(pos_b, vel_b, false); // regular boids
+    boids1.emplace_back(pos_b, vel_b, false); 
   }
 
   // Create n predators
@@ -67,10 +122,10 @@ int main()
     pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
     pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 100.0f,
                      ((rand() % 20 - 10) * 0.1f) + 100.0f);
-    boids1.emplace_back(pos_p, vel_p, true); // predators
+    boids1.emplace_back(pos_p, vel_p, true); 
   }
 
-  // Add all boids to their relative flock
+  // Add all boids to the flock
   flock.add_boids(boids1);
 
   sf::Clock clock;
@@ -85,7 +140,6 @@ int main()
 
     float delta_t = clock.restart().asSeconds();
 
-    // Update flock and predator
     flock.flock_update(delta_t);
     flock.predators_update(delta_t);
 
