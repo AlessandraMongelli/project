@@ -21,9 +21,6 @@ TEST_CASE("Testing Boid Class")
   const pf::Vector xb4(-1.0, -0.5);
   const pf::Vector vb4(-0.25, -2.0);
 
-  const pf::Vector xb5(1., 2.);
-  const pf::Vector vb5(2., 3.);
-
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
   pf::Boid boid3(xb3, vb3, 0);
@@ -137,26 +134,34 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the update position method ")
   {
-    const pf::Vector delta_x{1., -2.};
-    boid1.update_position(delta_x);
+    const pf::Vector delta_x1{1., -2.};
+    const pf::Vector delta_x2{0., -0.25};
+    boid1.update_position(delta_x1);
+    boid2.update_position(delta_x2);
     CHECK(boid1.get_position().get_x() == doctest::Approx(1.0).epsilon(0.1));
     CHECK(boid1.get_position().get_y() == doctest::Approx(-2.0).epsilon(0.1));
+    CHECK(boid2.get_position().get_x() == doctest::Approx(1.5).epsilon(0.1));
+    CHECK(boid2.get_position().get_y() == doctest::Approx(0.25).epsilon(0.01));
   }
 
   SUBCASE("Testing the update velocity method ")
   {
-    const pf::Vector delta_v{-0.5, 1.};
-    boid1.update_velocity(delta_v);
+    const pf::Vector delta_v1{-0.5, 1.};
+    const pf::Vector delta_v2{0., 4.};
+    boid1.update_velocity(delta_v1);
+    boid2.update_velocity(delta_v2);
     CHECK(boid1.get_velocity().get_x() == doctest::Approx(4.5).epsilon(0.1));
     CHECK(boid1.get_velocity().get_y() == doctest::Approx(0.0).epsilon(0.1));
+    CHECK(boid2.get_velocity().get_x() == doctest::Approx(-0.5).epsilon(0.1));
+    CHECK(boid2.get_velocity().get_y() == doctest::Approx(6.5).epsilon(0.1));
   }
 
   SUBCASE("Testing the rotate angle method ")
   {
     CHECK(boid1.rotate_angle() == doctest::Approx(78.690).epsilon(0.001));
-    CHECK(boid2.rotate_angle() == doctest::Approx(11.310).epsilon(0.001));
+    CHECK(boid2.rotate_angle() == doctest::Approx(191.310).epsilon(0.001));
     CHECK(boid3.rotate_angle() == doctest::Approx(108.435).epsilon(0.001));
-    CHECK(boid4.rotate_angle() == doctest::Approx(172.875).epsilon(0.001));
+    CHECK(boid4.rotate_angle() == doctest::Approx(-7.125).epsilon(0.001));
   }
 
   SUBCASE("Testing the edges behavior method ")
@@ -165,9 +170,9 @@ TEST_CASE("Testing Boid Class")
     boid2.edges_behavior(2., 7., 0., -7., 1.);
     boid3.edges_behavior(-5., 1., 5., -2., 2.);
     CHECK(boid1.get_velocity().get_x() == doctest::Approx(5.).epsilon(0.1));
-    CHECK(boid1.get_velocity().get_y() == doctest::Approx(2.).epsilon(0.1));
+    CHECK(boid1.get_velocity().get_y() == doctest::Approx(0.).epsilon(0.1));
     CHECK(boid2.get_velocity().get_x() == doctest::Approx(0.5).epsilon(0.1));
-    CHECK(boid2.get_velocity().get_y() == doctest::Approx(1.).epsilon(0.1));
+    CHECK(boid2.get_velocity().get_y() == doctest::Approx(1.5).epsilon(0.1));
     CHECK(boid3.get_velocity().get_x() == doctest::Approx(1.).epsilon(0.1));
     CHECK(boid3.get_velocity().get_y() == doctest::Approx(1.).epsilon(0.1));
   }
