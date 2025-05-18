@@ -1,30 +1,90 @@
 #include "flock.hpp"
 #include <SFML/Graphics.hpp>
 #include <chrono>
-#include <cmath>
-#include <cstdlib>
 #include <iostream>
-#include <random>
+#include <limits>
+#include <sstream>
+#include <string>
 #include <thread>
-#include <vector>
+
+bool valid_int(const std::string& input, int& value)
+{
+  std::stringstream ss(input);
+  char leftover;
+
+  if (!(ss >> value) || (ss >> leftover)) {
+    return false;
+  }
+  return true;
+}
 
 int main()
 {
-  std::cout << "Input range of view of the boids: \n";
+  std::cout << "Input number of boids (from 1 to 50): \n";
+  std::string boids;
+  int nb;
+  std::getline(std::cin, boids);
+  if (!valid_int(boids, nb) || nb < 1 || nb > 50) {
+    std::cerr
+        << "Error: number of boids must be an integer between 1 and 50 \n";
+    return 1;
+  }
+
+  std::cout << "Input number of predators (from 0 to 10): \n";
+  std::string predators;
+  int np;
+  std::getline(std::cin, predators);
+  if (!valid_int(predators, np) || np < 0 || np > 5) {
+    std::cerr
+        << "Error: number of predators must be an integer between 0 and 5 \n";
+    return 1;
+  }
+
+  std::cout
+      << "Input range of view of the boids (any number between 50 and 100): \n";
   float d;
   std::cin >> d;
-  std::cout << "Input protected range of the boids: \n";
+  if (d < 50.0f || d > 100.0f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input protected range of the boids (any number between 10 and "
+               "15): \n";
   float ds;
   std::cin >> ds;
-  std::cout << "Input protected range repulsion of the boids: \n";
+  if (ds < 10.0f || ds > 15.0f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input protected range repulsion of the boids (any number "
+               "between 0.1 and 0.8): \n";
   float s;
   std::cin >> s;
-  std::cout << "Input alignment parameter of the boids: \n";
+  if (s < 0.1f || s > 0.8f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout
+      << "Input alignment parameter of the boids (any number between 0.05 "
+         "and 0.1): \n";
   float a;
   std::cin >> a;
-  std::cout << "Input cohesion parameter of the boids: \n";
+  if (a < 0.05f || a > 0.1f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
+
+  std::cout << "Input cohesion parameter of the boids (any number between "
+               "0.002 and 0.004): \n";
   float c;
   std::cin >> c;
+  if (c < 0.002f || c > 0.004f) {
+    std::cerr << "Error: input value outside of permitted range \n";
+    return 1;
+  }
 
   sf::Clock delay_clock;
 
@@ -40,26 +100,28 @@ int main()
   std::cout << '\n';
 
   sf::RenderWindow window(sf::VideoMode(800, 600), "Boids Simulation");
+  window.setFramerateLimit(60);
 
-  pf::Flock flock(d, ds, s, a, c, 3.0f, 1.5f);
+  pf::Flock flock(d, ds, s, a, c, 200.0f, 100.0f);
   std::vector<pf::Boid> boids1;
-  std::vector<pf::Boid> boids2;
-  std::vector<pf::Boid> boids;
 
-  // Create normal boids
-  for (int i = 0; i < 30; ++i) {
-    pf::Vector pos(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel((rand() % 20 - 10) * 0.1f, (rand() % 20 - 10) * 0.1f);
-    boids1.emplace_back(pos, vel); // regular boid
+  // Create n normal boids
+  for (int i = 0; i < nb; ++i) {
+    pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
+    pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 100.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    boids1.emplace_back(pos_b, vel_b, false);
   }
 
-  // Create one predator boid
-  pf::Vector predator_pos(400.f, 300.f);
-  pf::Vector predator_vel(1.0f, 0.0f);
-  pf::Boid predator(predator_pos, predator_vel); // is_predator = true
-  boids1.push_back(predator);
+  // Create n predators
+  for (int i = 0; i < np; ++i) {
+    pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
+    pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 100.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    boids1.emplace_back(pos_p, vel_p, true);
+  }
 
-  // Add all boids to their relative flock
+  // Add all boids to the flock
   flock.add_boids(boids1);
 
   sf::Clock clock;
@@ -74,9 +136,8 @@ int main()
 
     float delta_t = clock.restart().asSeconds();
 
-    // Update flock and predator
-    flock.flock_update();
-    flock.predators_update();
+    flock.flock_update(delta_t);
+    flock.predators_update(delta_t);
 
     sf::Time time_passed = statistics_clock.getElapsedTime();
 
@@ -94,12 +155,12 @@ int main()
     window.clear(sf::Color::Black);
 
     // Draw boids and a predator
-    for (auto boid : flock.get_flock()) {
+    for (const auto& boid : flock.get_flock()) {
       boid.draw(window);
     }
 
-    for (auto predator : flock.get_predators()) {
-      predator.draw(window);
+    for (const auto& boid : flock.get_predators()) {
+      boid.draw(window);
     }
 
     window.display();

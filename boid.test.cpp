@@ -21,10 +21,10 @@ TEST_CASE("Testing Boid Class")
   const pf::Vector xb4(-1.0, -0.5);
   const pf::Vector vb4(-0.25, -2.0);
 
-  pf::Boid boid1(xb1, vb1);
-  pf::Boid boid2(xb2, vb2);
-  pf::Boid boid3(xb3, vb3);
-  pf::Boid boid4(xb4, vb4);
+  pf::Boid boid1(xb1, vb1, 0);
+  pf::Boid boid2(xb2, vb2, 0);
+  pf::Boid boid3(xb3, vb3, 0);
+  pf::Boid boid4(xb4, vb4, 0);
 
   std::vector<pf::Boid> boids      = {boid1, boid2, boid3, boid4};
   std::vector<pf::Boid> neighbors1 = boid1.neighboring(boids, 2.5f);
@@ -183,8 +183,8 @@ TEST_CASE("Testing == operator")
   {
     const pf::Vector xb{1., 2.};
     const pf::Vector vb{2., 2.};
-    pf::Boid boid1(xb, vb);
-    pf::Boid boid2(xb, vb);
+    pf::Boid boid1(xb, vb, 0);
+    pf::Boid boid2(xb, vb, 0);
     CHECK(boid1.operator==(boid2) == true);
   }
   SUBCASE("Non-equal component")
@@ -193,8 +193,8 @@ TEST_CASE("Testing == operator")
     const pf::Vector vb1{2., 2.};
     const pf::Vector xb2{0.5, 1.};
     const pf::Vector vb2{3., 3.};
-    pf::Boid boid1(xb1, vb1);
-    pf::Boid boid2(xb2, vb2);
+    pf::Boid boid1(xb1, vb1, 0);
+    pf::Boid boid2(xb2, vb2, 0);
     CHECK(boid1.operator==(boid2) == false);
   }
 }

@@ -1,10 +1,6 @@
 #ifndef FLOCK_H
 #define FLOCK_H
 #include "boid.hpp"
-#include "vector.hpp"
-#include <algorithm>
-#include <numeric>
-#include <vector>
 
 namespace pf {
 struct Statistics
@@ -33,9 +29,9 @@ class Flock
         const float c, const float max_vel, const float min_vel);
 
   void add_boids(const std::vector<Boid>&);
-  void add_predators(const std::vector<Boid>&);
-  std::vector<Boid> get_flock() const;
-  std::vector<Boid> get_predators() const;
+  //void add_predators(const std::vector<Boid>&);
+  const std::vector<Boid>& get_flock() const;
+  const std::vector<Boid>& get_predators() const;
   size_t size();
 
   Vector flock_separation(const Boid&,
@@ -45,8 +41,8 @@ class Flock
   Vector avoid_predators(const Boid&);
   Vector chase_prey(const Boid&, const std::vector<Boid>& neighbors);
 
-  void predators_update();
-  void flock_update();
+  void predators_update(float delta_t);
+  void flock_update(float delta_t);
   Statistics flock_state() const;
 };
 } // namespace pf

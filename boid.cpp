@@ -4,18 +4,19 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <cmath>
-#include <numeric>
 
 namespace pf {
 
 Boid::Boid()
     : x_b(0., 0.)
-    , v_b(0., 0.) {};
+    , v_b(0., 0.)
+    , is_predator(0) {};
 
-Boid::Boid(Vector xb, Vector vb)
+Boid::Boid(Vector xb, Vector vb, bool predator)
 {
   x_b = xb;
   v_b = vb;
+  is_predator = predator;
 
   {
     shape.setPointCount(3);
@@ -24,8 +25,16 @@ Boid::Boid(Vector xb, Vector vb)
     shape.setPoint(0, sf::Vector2f(0, -10));
     shape.setPoint(1, sf::Vector2f(-5, 5));
     shape.setPoint(2, sf::Vector2f(5, 5));
+
+    shape.setFillColor(is_predator ? sf::Color::Red : sf::Color::White);
   };
 }
+
+void Boid::set_predator(bool value)
+{
+  is_predator = value;
+}
+
 
 Vector Boid::get_position() const
 {
@@ -36,6 +45,10 @@ Vector Boid::get_velocity() const
 {
   return v_b;
 };
+
+bool Boid::get_predator() const {
+ return is_predator;
+}
 
 bool Boid::operator==(const Boid& boid) const
 {
@@ -159,7 +172,7 @@ void Boid::edges_behavior(const float leftmargin, const float rightmargin,
   }
 }; */
 
-void Boid::draw(sf::RenderWindow& window)
+void Boid::draw(sf::RenderWindow& window) const
 {
   shape.setPosition(x_b.get_x(), x_b.get_y());
 
