@@ -4,7 +4,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <cmath>
-#include <numeric>
 
 namespace pf {
 

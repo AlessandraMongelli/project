@@ -1,16 +1,11 @@
 #include "flock.hpp"
 #include <SFML/Graphics.hpp>
-#include <cassert>
 #include <chrono>
-#include <cmath>
-#include <cstdlib>
 #include <iostream>
 #include <limits>
-#include <random>
 #include <sstream>
 #include <string>
 #include <thread>
-#include <vector>
 
 bool valid_int(const std::string& input, int& value)
 {
@@ -41,7 +36,7 @@ int main()
   std::getline(std::cin, predators);
   if (!valid_int(predators, np) || np < 0 || np > 5) {
     std::cerr
-        << "Error: number of predators must be an integer between 0 and 10 \n";
+        << "Error: number of predators must be an integer between 0 and 5 \n";
     return 1;
   }
 
@@ -72,8 +67,9 @@ int main()
     return 1;
   }
 
-  std::cout << "Input alignment parameter of the boids (any number between 0.1 "
-               "and 0.05): \n";
+  std::cout
+      << "Input alignment parameter of the boids (any number between 0.05 "
+         "and 0.1): \n";
   float a;
   std::cin >> a;
   if (a < 0.05f || a > 0.1f) {
@@ -114,7 +110,7 @@ int main()
     pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
     pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 100.0f,
                      ((rand() % 20 - 10) * 0.1f) + 100.0f);
-    boids1.emplace_back(pos_b, vel_b, false); 
+    boids1.emplace_back(pos_b, vel_b, false);
   }
 
   // Create n predators
@@ -122,7 +118,7 @@ int main()
     pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
     pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 100.0f,
                      ((rand() % 20 - 10) * 0.1f) + 100.0f);
-    boids1.emplace_back(pos_p, vel_p, true); 
+    boids1.emplace_back(pos_p, vel_p, true);
   }
 
   // Add all boids to the flock

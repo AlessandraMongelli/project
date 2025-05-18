@@ -1,10 +1,6 @@
 #ifndef FLOCK_H
 #define FLOCK_H
 #include "boid.hpp"
-#include "vector.hpp"
-#include <algorithm>
-#include <numeric>
-#include <vector>
 
 namespace pf {
 struct Statistics

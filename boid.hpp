@@ -2,8 +2,6 @@
 #define BOID_H
 #include "vector.hpp"
 #include <SFML/Graphics.hpp>
-#include <cassert>
-#include <cstdlib>
 #include <vector>
 
 namespace pf {

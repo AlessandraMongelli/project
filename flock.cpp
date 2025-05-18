@@ -1,10 +1,7 @@
 #include "flock.hpp"
 #include "boid.hpp"
 #include "vector.hpp"
-#include <algorithm>
 #include <cmath>
-#include <numeric>
-#include <vector>
 
 namespace pf {
 
@@ -145,7 +142,7 @@ void Flock::flock_update(float delta_t)
       if (boid.get_position() == other.get_position())
         continue;
       if (boid.get_position().distance(other.get_position()) < d_) {
-        neighbors.push_back(other); // Still copying here, optional to refactor
+        neighbors.push_back(other); // Still copying here
       }
     }
 
