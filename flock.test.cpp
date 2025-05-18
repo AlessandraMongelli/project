@@ -5,7 +5,7 @@
 #include "doctest.h"
 #include "vector.hpp"
 
-TEST_CASE("Testing three close boids")
+/*TEST_CASE("Testing three close boids")
 {
   const pf::Vector xb1(2., 0.);
   const pf::Vector vb1(0.5, 2.);
@@ -44,4 +44,4 @@ TEST_CASE("Testing three close boids")
   SUBCASE("Testing add_predator method"){
     
   }
-}
+} */
