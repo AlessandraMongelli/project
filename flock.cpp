@@ -45,7 +45,7 @@ const std::vector<Boid>& Flock::get_predators() const
 
 size_t Flock::size()
 {
-  return flock_.size();
+  return flock_.size() + predators_.size();
 };
 
 Vector Flock::flock_separation(const Boid& boid,
