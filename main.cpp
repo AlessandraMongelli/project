@@ -30,7 +30,7 @@ int main()
     return 1;
   }
 
-  std::cout << "Input number of predators (from 0 to 10): \n";
+  std::cout << "Input number of predators (from 0 to 5): \n";
   std::string predators;
   int np;
   std::getline(std::cin, predators);
@@ -154,7 +154,6 @@ int main()
 
     window.clear(sf::Color::Black);
 
-    // Draw boids and a predator
     for (const auto& boid : flock.get_flock()) {
       boid.draw(window);
     }
