@@ -107,9 +107,12 @@ Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 void Flock::predators_update(float delta_t)
 {
   for (auto& boid : predators_) {
-    std::vector<Boid> flock_neighbors = boid.neighboring(flock_, d_);
+    std::vector<Boid> flock_neighbors     = boid.neighboring(flock_, d_);
+    std::vector<Boid> predators_neighbors = boid.neighboring(predators_, d_);
 
-    Vector delta_v = chase_prey(boid, flock_neighbors);
+    Vector delta_v = flock_separation(boid, predators_neighbors)
+                   + chase_prey(boid, flock_neighbors);
+
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
     boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);

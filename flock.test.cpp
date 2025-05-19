@@ -44,7 +44,7 @@ TEST_CASE("Testing three close boids")
   std::vector<pf::Boid> neighbors3 = boid3.neighboring(boids, ds);
   std::vector<pf::Boid> neighbors4 = boid4.neighboring(boids, ds);
 
-  SUBCASE("Testing add_boids anf size methods")
+  SUBCASE("Testing add_boids and size methods")
   {
     flock.add_boids(boids1);
     CHECK(flock.size() == 1);
