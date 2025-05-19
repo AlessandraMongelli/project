@@ -153,25 +153,6 @@ void Boid::edges_behavior(const float leftmargin, const float rightmargin,
   }
 };
 
-/* void Boid::edges_behavior(const float width, const float height)
-{
-  if (x_b.get_x() < 0) {
-    x_b.set_x(width);
-  }
-
-  if (x_b.get_x() > width) {
-    x_b.set_x(0);
-  }
-
-  if (x_b.get_y() > height) {
-    x_b.set_y(0);
-  }
-
-  if (x_b.get_y() < 0) {
-    x_b.set_y(height);
-  }
-}; */
-
 void Boid::draw(sf::RenderWindow& window) const
 {
   shape.setPosition(x_b.get_x(), x_b.get_y());

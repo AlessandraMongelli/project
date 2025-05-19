@@ -29,17 +29,16 @@ class Flock
         const float c, const float max_vel, const float min_vel);
 
   void add_boids(const std::vector<Boid>&);
-  //void add_predators(const std::vector<Boid>&);
   const std::vector<Boid>& get_flock() const;
   const std::vector<Boid>& get_predators() const;
   size_t size();
 
   Vector flock_separation(const Boid&,
                           const std::vector<Boid>& neighbors) const;
-  Vector flock_alignment(const Boid&, const std::vector<Boid>& neighbors) const;
-  Vector flock_cohesion(const Boid&, const std::vector<Boid>& neighbors) const;
+  Vector flock_alignment(const Boid&, const std::vector<Boid>& flock_neighbors) const;
+  Vector flock_cohesion(const Boid&, const std::vector<Boid>& flock_neighbors) const;
   Vector avoid_predators(const Boid&);
-  Vector chase_prey(const Boid&, const std::vector<Boid>& neighbors);
+  Vector chase_prey(const Boid&, const std::vector<Boid>& flock_neighbors);
 
   void predators_update(float delta_t);
   void flock_update(float delta_t);

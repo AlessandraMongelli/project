@@ -39,7 +39,6 @@ class Boid
   void edges_behavior(const float leftmargin, const float rightmargin,
                       const float topmargin, const float bottommargin,
                       const float t);
-  // void edges_behavior(const float width, const float height);
 
   void draw(sf::RenderWindow& window) const;
 };

@@ -30,7 +30,7 @@ int main()
     return 1;
   }
 
-  std::cout << "Input number of predators (from 0 to 10): \n";
+  std::cout << "Input number of predators (from 0 to 5): \n";
   std::string predators;
   int np;
   std::getline(std::cin, predators);
@@ -78,10 +78,10 @@ int main()
   }
 
   std::cout << "Input cohesion parameter of the boids (any number between "
-               "0.002 and 0.004): \n";
+               "0.003 and 0.005): \n";
   float c;
   std::cin >> c;
-  if (c < 0.002f || c > 0.004f) {
+  if (c < 0.003f || c > 0.005f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
@@ -102,22 +102,22 @@ int main()
   sf::RenderWindow window(sf::VideoMode(800, 600), "Boids Simulation");
   window.setFramerateLimit(60);
 
-  pf::Flock flock(d, ds, s, a, c, 200.0f, 100.0f);
+  pf::Flock flock(d, ds, s, a, c, 150.0f, 50.0f);
   std::vector<pf::Boid> boids1;
 
   // Create n normal boids
   for (int i = 0; i < nb; ++i) {
     pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 100.0f,
-                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 10.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 10.0f);
     boids1.emplace_back(pos_b, vel_b, false);
   }
 
   // Create n predators
   for (int i = 0; i < np; ++i) {
     pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 100.0f,
-                     ((rand() % 20 - 10) * 0.1f) + 100.0f);
+    pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 50.0f,
+                     ((rand() % 20 - 10) * 0.1f) + 50.0f);
     boids1.emplace_back(pos_p, vel_p, true);
   }
 
@@ -146,7 +146,7 @@ int main()
     if (flock.size() >= 2 && time_passed.asSeconds() >= 2.0f) {
       std::cout << "Average velocity: " << flock_state.average_vel << " +/- "
                 << flock_state.dev_vel << ";       "
-                << "Medium distance among boids: " << flock_state.average_dist
+                << "Average distance among boids: " << flock_state.average_dist
                 << " +/- " << flock_state.dev_dist << ";\n";
 
       statistics_clock.restart();
@@ -154,7 +154,6 @@ int main()
 
     window.clear(sf::Color::Black);
 
-    // Draw boids and a predator
     for (const auto& boid : flock.get_flock()) {
       boid.draw(window);
     }

@@ -193,4 +193,4 @@ TEST_CASE("Testing three close boids")
     CHECK(flock.chase_prey(boid6, neighbors6).get_y()
           == doctest::Approx(0.).epsilon(0.001));
   }
-}
+} 

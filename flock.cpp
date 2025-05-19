@@ -26,13 +26,6 @@ void Flock::add_boids(const std::vector<Boid>& boids)
   }
 }
 
-/* void Flock::add_predators(const std::vector<Boid>& predators)
-{
-  for (auto& predator : predators) {
-    predators_.push_back(predator);
-  }
-} */
-
 const std::vector<Boid>& Flock::get_flock() const
 {
   return flock_;
@@ -55,36 +48,36 @@ Vector Flock::flock_separation(const Boid& boid,
 }
 
 Vector Flock::flock_alignment(const Boid& boid,
-                              const std::vector<Boid>& neighbors) const
+                              const std::vector<Boid>& flock_neighbors) const
 {
   if (boid.get_predator() == true) {
     return {0., 0.};
   }
-  return boid.alignment(neighbors, a_);
+  return boid.alignment(flock_neighbors, a_);
 }
 
 Vector Flock::flock_cohesion(const Boid& boid,
-                             const std::vector<Boid>& neighbors) const
+                             const std::vector<Boid>& flock_neighbors) const
 {
   if (boid.get_predator() == true) {
     return {0., 0.};
   }
-  return boid.cohesion(neighbors, c_);
+  return boid.cohesion(flock_neighbors, c_);
 }
 
 Vector Flock::avoid_predators(const Boid& boid)
 {
   Vector steer(0., 0.);
-  Vector p = boid.get_position();
+  Vector position = boid.get_position();
   for (auto& predator : predators_) {
-    if (predator.get_position().distance(p) < d_
-        && predator.get_position().distance(p) > ds_) {
-      steer += (p - predator.get_position())
-             * (1.0f / predator.get_position().distance(p)) * 15.0f;
-    } else if (predator.get_position().distance(p) < ds_
-               && predator.get_position().distance(p) != 0) {
-      steer += (p - predator.get_position())
-             * (1.0f / predator.get_position().distance(p)) * 25.0f;
+    if (predator.get_position().distance(position) < d_
+        && predator.get_position().distance(position) > ds_) {
+      steer += (position - predator.get_position())
+             * (1.0f / predator.get_position().distance(position)) * 15.0f;
+    } else if (predator.get_position().distance(position) < ds_
+               && predator.get_position().distance(position) != 0) {
+      steer += (position - predator.get_position())
+             * (1.0f / predator.get_position().distance(position)) * 25.0f;
     }
   }
   return steer;
@@ -120,40 +113,25 @@ void Flock::predators_update(float delta_t)
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
     boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);
-    // boid.edges_behavior(800.0f, 600.0f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
 }
 
 void Flock::flock_update(float delta_t)
 {
-  // Avoid copies: create a vector of references to all boids
-  std::vector<std::reference_wrapper<const Boid>> all_boids;
-  all_boids.reserve(flock_.size() + predators_.size());
-
-  for (const auto& b : flock_)
-    all_boids.push_back(std::cref(b));
-  for (const auto& p : predators_)
-    all_boids.push_back(std::cref(p));
-
   for (auto& boid : flock_) {
-    std::vector<Boid> neighbors; // Keep using real Boids for compatibility
-    for (const Boid& other : all_boids) {
-      if (boid.get_position() == other.get_position())
-        continue;
-      if (boid.get_position().distance(other.get_position()) < d_) {
-        neighbors.push_back(other); // Still copying here
-      }
-    }
+    std::vector<Boid> flock_neighbors     = boid.neighboring(flock_, d_);
+    std::vector<Boid> predators_neighbors = boid.neighboring(predators_, d_);
 
-    Vector delta_v = flock_separation(boid, neighbors)
-                   + flock_alignment(boid, neighbors)
-                   + flock_cohesion(boid, neighbors) + avoid_predators(boid);
+    Vector delta_v = flock_separation(boid, flock_neighbors)
+                   + flock_separation(boid, predators_neighbors)
+                   + flock_alignment(boid, flock_neighbors)
+                   + flock_cohesion(boid, flock_neighbors)
+                   + avoid_predators(boid);
 
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
     boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
-    // boid.edges_behavior(800.0f, 600.0f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
 }
@@ -192,5 +170,4 @@ Statistics Flock::flock_state() const
     return {average_dist, dev_dist, average_vel, dev_vel};
   }
 }
-
 }; // namespace pf
