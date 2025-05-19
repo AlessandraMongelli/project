@@ -69,7 +69,7 @@ int main()
 
   std::cout
       << "Input alignment parameter of the boids (any number between 0.05 "
-         "and 0.1): \n";
+         "and 0.10): \n";
   float a;
   std::cin >> a;
   if (a < 0.05f || a > 0.1f) {
