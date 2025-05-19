@@ -146,7 +146,7 @@ int main()
     if (flock.size() >= 2 && time_passed.asSeconds() >= 2.0f) {
       std::cout << "Average velocity: " << flock_state.average_vel << " +/- "
                 << flock_state.dev_vel << ";       "
-                << "Medium distance among boids: " << flock_state.average_dist
+                << "Average distance among boids: " << flock_state.average_dist
                 << " +/- " << flock_state.dev_dist << ";\n";
 
       statistics_clock.restart();
