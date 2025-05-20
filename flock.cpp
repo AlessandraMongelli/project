@@ -157,18 +157,18 @@ Statistics Flock::flock_state() const
     float n = static_cast<float>(flock_.size() * (flock_.size() - 1)) / 2.0f;
     float average_dist  = sum_dist / n;
     float average_dist2 = sum_dist2 / n;
-    float dev_dist      = std::sqrt(average_dist2 - std::pow(average_dist, 2));
+    float dev_dist      = static_cast<float>(std::sqrt(average_dist2 - std::pow(average_dist, 2)));
 
     float sum_vel = 0.0f, sum_vel2 = 0.0f;
     for (const auto& boid : flock_) {
       float speed = boid.get_velocity().norm();
       sum_vel += speed;
-      sum_vel2 += std::pow(speed, 2);
+      sum_vel2 += static_cast<float>(std::pow(speed, 2));
     }
 
-    float average_vel  = sum_vel / flock_.size();
-    float average_vel2 = sum_vel2 / flock_.size();
-    float dev_vel      = std::sqrt(average_vel2 - std::pow(average_vel, 2));
+    float average_vel  = static_cast<float>(sum_vel / flock_.size());
+    float average_vel2 = static_cast<float>(sum_vel2 / flock_.size());
+    float dev_vel      = static_cast<float>(std::sqrt(average_vel2 - std::pow(average_vel, 2)));
 
     return {average_dist, dev_dist, average_vel, dev_vel};
   }

@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <limits>
+#include <random>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -59,17 +60,17 @@ int main()
   }
 
   std::cout << "Input protected range repulsion of the boids (any number "
-               "between 0.1 and 0.8): \n";
+               "between 0.4 and 0.8): \n";
   float s;
   std::cin >> s;
-  if (s < 0.1f || s > 0.8f) {
+  if (s < 0.4f || s > 0.8f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
 
   std::cout
       << "Input alignment parameter of the boids (any number between 0.05 "
-         "and 0.1): \n";
+         "and 0.10): \n";
   float a;
   std::cin >> a;
   if (a < 0.05f || a > 0.1f) {
@@ -105,19 +106,37 @@ int main()
   pf::Flock flock(d, ds, s, a, c, 150.0f, 50.0f);
   std::vector<pf::Boid> boids1;
 
+  std::random_device r;
+  std::default_random_engine eng{r()};
+
+  std::uniform_real_distribution<float> pos_x_distrib(150.0f, 650.0f);
+  std::uniform_real_distribution<float> pos_y_distrib(150.0f, 450.0f);
+
+  std::uniform_real_distribution<float> vel_distrib(25.0f, 95.0f);
+
   // Create n normal boids
   for (int i = 0; i < nb; ++i) {
+<<<<<<< HEAD
     pf::Vector pos_b(static_cast<float>(400 + rand() % 100 - 50), static_cast<float>(300 + rand() % 100 - 50));
     pf::Vector vel_b((static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f,
                      (static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f);
+=======
+    pf::Vector pos_b(pos_x_distrib(eng), pos_y_distrib(eng));
+    pf::Vector vel_b(vel_distrib(eng), vel_distrib(eng));
+>>>>>>> 3be4830bb3d7ce81131b929d5a66217fc7122895
     boids1.emplace_back(pos_b, vel_b, false);
   }
 
   // Create n predators
   for (int i = 0; i < np; ++i) {
+<<<<<<< HEAD
     pf::Vector pos_p(static_cast<float>(400 + rand() % 100 - 50), 300 + static_cast<float>(rand() % 100 - 50));
     pf::Vector vel_p((static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f,
                      (static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f);
+=======
+    pf::Vector pos_p(pos_x_distrib(eng), pos_y_distrib(eng));
+    pf::Vector vel_p(vel_distrib(eng), vel_distrib(eng));
+>>>>>>> 3be4830bb3d7ce81131b929d5a66217fc7122895
     boids1.emplace_back(pos_p, vel_p, true);
   }
 

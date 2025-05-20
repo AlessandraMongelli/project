@@ -25,7 +25,7 @@ int main()
   pf::Boid boid4(pos4, vel4, 0);
   pf::Boid boid5(pos5, vel5, 0);
   pf::Boid boid6(pos6, vel6, 0);
-  
+
   std::vector<pf::Boid> boids = {boid1, boid2, boid3, boid4, boid5, boid6};
   flock.add_boids(boids);
 
@@ -34,17 +34,23 @@ int main()
                  "Velocity Standard Deviation of Velocity\n";
   float time_passed     = 0.0f;
   float simulation_time = 30.0f;
+  float delta_t       = 0.05f;
+  float log_interval  = 1.0f;
+  float next_log_time = log_interval;
+
   while (time_passed < simulation_time) {
-    float delta_t = 0.05f;
     time_passed += delta_t;
     flock.flock_update(delta_t);
-    if (time_passed >= 1.0f) {
+
+    if (time_passed >= next_log_time) {
       const pf::Statistics state = flock.flock_state();
       output_file << time_passed << " " << state.average_dist << " "
                   << state.dev_dist << " " << state.average_vel << " "
                   << state.dev_vel << "\n";
+      next_log_time += log_interval;
     }
   }
+
   output_file.close();
   std::cout << "Data saved in sample_data.txt.\n";
   return 0;
