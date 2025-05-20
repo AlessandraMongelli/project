@@ -134,7 +134,7 @@ void Flock::flock_update(float delta_t)
 
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
 }
