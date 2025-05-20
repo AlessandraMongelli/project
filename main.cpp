@@ -116,27 +116,15 @@ int main()
 
   // Create n normal boids
   for (int i = 0; i < nb; ++i) {
-<<<<<<< HEAD
-    pf::Vector pos_b(static_cast<float>(400 + rand() % 100 - 50), static_cast<float>(300 + rand() % 100 - 50));
-    pf::Vector vel_b((static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f,
-                     (static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f);
-=======
     pf::Vector pos_b(pos_x_distrib(eng), pos_y_distrib(eng));
     pf::Vector vel_b(vel_distrib(eng), vel_distrib(eng));
->>>>>>> 3be4830bb3d7ce81131b929d5a66217fc7122895
     boids1.emplace_back(pos_b, vel_b, false);
   }
 
   // Create n predators
   for (int i = 0; i < np; ++i) {
-<<<<<<< HEAD
-    pf::Vector pos_p(static_cast<float>(400 + rand() % 100 - 50), 300 + static_cast<float>(rand() % 100 - 50));
-    pf::Vector vel_p((static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f,
-                     (static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f);
-=======
     pf::Vector pos_p(pos_x_distrib(eng), pos_y_distrib(eng));
     pf::Vector vel_p(vel_distrib(eng), vel_distrib(eng));
->>>>>>> 3be4830bb3d7ce81131b929d5a66217fc7122895
     boids1.emplace_back(pos_p, vel_p, true);
   }
 
