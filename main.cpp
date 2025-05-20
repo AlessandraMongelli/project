@@ -90,7 +90,7 @@ int main()
 
   while (delay_clock.getElapsedTime().asSeconds() < 3.0f) {
     std::cout << "The simulation will start in "
-              << (3 - (int)delay_clock.getElapsedTime().asSeconds())
+              << (3 - static_cast<int>(delay_clock.getElapsedTime().asSeconds()))
               << " seconds...\r";
     std::cout.flush();
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -107,17 +107,17 @@ int main()
 
   // Create n normal boids
   for (int i = 0; i < nb; ++i) {
-    pf::Vector pos_b(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel_b(((rand() % 20 - 10) * 0.1f) + 10.0f,
-                     ((rand() % 20 - 10) * 0.1f) + 10.0f);
+    pf::Vector pos_b(static_cast<float>(400 + rand() % 100 - 50), static_cast<float>(300 + rand() % 100 - 50));
+    pf::Vector vel_b((static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f,
+                     (static_cast<float>(rand() % 20 - 10) * 0.1f) + 10.0f);
     boids1.emplace_back(pos_b, vel_b, false);
   }
 
   // Create n predators
   for (int i = 0; i < np; ++i) {
-    pf::Vector pos_p(400 + rand() % 100 - 50, 300 + rand() % 100 - 50);
-    pf::Vector vel_p(((rand() % 20 - 10) * 0.1f) + 50.0f,
-                     ((rand() % 20 - 10) * 0.1f) + 50.0f);
+    pf::Vector pos_p(static_cast<float>(400 + rand() % 100 - 50), 300 + static_cast<float>(rand() % 100 - 50));
+    pf::Vector vel_p((static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f,
+                     (static_cast<float>((rand() % 20 - 10)) * 0.1f) + 50.0f);
     boids1.emplace_back(pos_p, vel_p, true);
   }
 
