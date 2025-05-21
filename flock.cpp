@@ -85,7 +85,7 @@ Vector Flock::avoid_predators(const Boid& boid)
 
 Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 {
-  Vector vp(0., 0.);
+  Vector v_cp(0., 0.);
   Vector position = boid.get_position();
 
   auto compare_distances = [&position](const Boid& boid1, const Boid& boid2) {
@@ -98,10 +98,10 @@ Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 
   if (closest != neighbors.end()
       && (closest->get_position() - position).norm() != 0) {
-    vp += (closest->get_position() - position)
+    v_cp += (closest->get_position() - position)
         * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
   }
-  return vp;
+  return v_cp;
 }
 
 void Flock::predators_update(float delta_t)
@@ -134,7 +134,7 @@ void Flock::flock_update(float delta_t)
 
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
 }
