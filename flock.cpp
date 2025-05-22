@@ -162,9 +162,9 @@ Statistics Flock::flock_state() const
 
     float sum_vel = 0.0f, sum_vel2 = 0.0f;
     for (const auto& boid : flock_) {
-      float speed = boid.get_velocity().norm();
-      sum_vel += speed;
-      sum_vel2 += static_cast<float>(pow(speed, 2));
+      float vel = boid.get_velocity().norm();
+      sum_vel += vel;
+      sum_vel2 += static_cast<float>(pow(vel, 2));
     }
 
     float average_vel  = sum_vel / static_cast<float>(flock_.size());

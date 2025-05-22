@@ -318,7 +318,7 @@ TEST_CASE("Testing predators_update")
 TEST_CASE("Testing flock_update")
 {
   const pf::Vector xb1(10.5, 12.);
-  const pf::Vector vb1(1, -1.5);
+  const pf::Vector vb1(1., -1.5);
 
   const pf::Vector xb2(11., 11.5);
   const pf::Vector vb2(-0.5, -1.);
@@ -327,7 +327,7 @@ TEST_CASE("Testing flock_update")
   const pf::Vector vb3(2., 0.);
 
   const pf::Vector xb4(200., 180.);
-  const pf::Vector vb4(-2, 1.);
+  const pf::Vector vb4(-2., 1.);
 
   const pf::Vector xb5(710., 505.);
   const pf::Vector vb5(1.5, 0.5);
