@@ -14,8 +14,8 @@ Boid::Boid()
 
 Boid::Boid(Vector xb, Vector vb, bool predator)
 {
-  x_b = xb;
-  v_b = vb;
+  x_b         = xb;
+  v_b         = vb;
   is_predator = predator;
 
   {
@@ -35,7 +35,6 @@ void Boid::set_predator(bool value)
   is_predator = value;
 }
 
-
 Vector Boid::get_position() const
 {
   return x_b;
@@ -46,8 +45,9 @@ Vector Boid::get_velocity() const
   return v_b;
 };
 
-bool Boid::get_predator() const {
- return is_predator;
+bool Boid::get_predator() const
+{
+  return is_predator;
 }
 
 bool Boid::operator==(const Boid& boid) const
