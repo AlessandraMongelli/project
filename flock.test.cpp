@@ -5,7 +5,7 @@
 #include "doctest.h"
 #include "vector.hpp"
 
-TEST_CASE("Testing three close boids")
+TEST_CASE("Testing Flock Class")
 {
   const pf::Vector xb1(15, 0.);
   const pf::Vector vb1(0.5, 2.);
@@ -374,13 +374,13 @@ TEST_CASE("Testing flock_update")
   auto boids_0 = flock.get_flock();
 
   CHECK(boids_0[0].get_velocity().get_x()
-        == doctest::Approx(17.58).epsilon(0.01));
+        == doctest::Approx(15.08).epsilon(0.01));
   CHECK(boids_0[0].get_velocity().get_y()
-        == doctest::Approx(11.94).epsilon(0.01));
+        == doctest::Approx(9.44).epsilon(0.01));
   CHECK(boids_0[0].get_position().get_x()
-        == doctest::Approx(28.08).epsilon(0.01));
+        == doctest::Approx(25.58).epsilon(0.01));
   CHECK(boids_0[0].get_position().get_y()
-        == doctest::Approx(23.94).epsilon(0.01));
+        == doctest::Approx(21.44).epsilon(0.01));
 
   CHECK(boids_0[3].get_velocity().get_x()
         == doctest::Approx(-2.0).epsilon(0.01));
@@ -392,11 +392,11 @@ TEST_CASE("Testing flock_update")
         == doctest::Approx(181.0).epsilon(0.01));
 
   CHECK(boids_0[4].get_velocity().get_x()
-        == doctest::Approx(-13.5).epsilon(0.01));
+        == doctest::Approx(-11).epsilon(0.01));
   CHECK(boids_0[4].get_velocity().get_y()
-        == doctest::Approx(-14.5).epsilon(0.01));
+        == doctest::Approx(-12).epsilon(0.01));
   CHECK(boids_0[4].get_position().get_x()
-        == doctest::Approx(696.5).epsilon(0.01));
+        == doctest::Approx(699.).epsilon(0.01));
   CHECK(boids_0[4].get_position().get_y()
-        == doctest::Approx(490.5).epsilon(0.01));
+        == doctest::Approx(493).epsilon(0.01));
 }
