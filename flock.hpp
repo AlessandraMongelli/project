@@ -35,8 +35,10 @@ class Flock
 
   Vector flock_separation(const Boid&,
                           const std::vector<Boid>& neighbors) const;
-  Vector flock_alignment(const Boid&, const std::vector<Boid>& flock_neighbors) const;
-  Vector flock_cohesion(const Boid&, const std::vector<Boid>& flock_neighbors) const;
+  Vector flock_alignment(const Boid&,
+                         const std::vector<Boid>& flock_neighbors) const;
+  Vector flock_cohesion(const Boid&,
+                        const std::vector<Boid>& flock_neighbors) const;
   Vector avoid_predators(const Boid&);
   Vector chase_prey(const Boid&, const std::vector<Boid>& flock_neighbors);
 

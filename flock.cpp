@@ -18,7 +18,7 @@ Flock::Flock(const float d, const float ds, const float s, const float a,
 void Flock::add_boids(const std::vector<Boid>& boids)
 {
   for (auto& boid : boids) {
-    if (boid.get_predator() == true) {
+    if (boid.get_predator() == 1) {
       predators_.push_back(boid);
     } else {
       flock_.push_back(boid);
@@ -99,7 +99,7 @@ Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
   if (closest != neighbors.end()
       && (closest->get_position() - position).norm() != 0) {
     v_cp += (closest->get_position() - position)
-        * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
+          * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
   }
   return v_cp;
 }
@@ -157,7 +157,8 @@ Statistics Flock::flock_state() const
     float n = static_cast<float>(flock_.size() * (flock_.size() - 1)) / 2.0f;
     float average_dist  = sum_dist / n;
     float average_dist2 = sum_dist2 / n;
-    float dev_dist      = static_cast<float>(sqrt(average_dist2 - pow(average_dist, 2)));
+    float dev_dist =
+        static_cast<float>(sqrt(average_dist2 - pow(average_dist, 2)));
 
     float sum_vel = 0.0f, sum_vel2 = 0.0f;
     for (const auto& boid : flock_) {
@@ -168,7 +169,8 @@ Statistics Flock::flock_state() const
 
     float average_vel  = sum_vel / static_cast<float>(flock_.size());
     float average_vel2 = sum_vel2 / static_cast<float>(flock_.size());
-    float dev_vel      = static_cast<float>(sqrt(average_vel2 - pow(average_vel, 2)));
+    float dev_vel =
+        static_cast<float>(sqrt(average_vel2 - pow(average_vel, 2)));
 
     return {average_dist, dev_dist, average_vel, dev_vel};
   }
