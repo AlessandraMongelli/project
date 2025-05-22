@@ -288,29 +288,115 @@ TEST_CASE("Testing predators_update")
   auto predators = flock.get_predators();
 
   CHECK(predators[0].get_velocity().get_x()
-        == doctest::Approx(3.83).epsilon(0.01));
+        == doctest::Approx(16.47).epsilon(0.01));
   CHECK(predators[0].get_velocity().get_y()
-        == doctest::Approx(-1.15).epsilon(0.01));
+        == doctest::Approx(11.97).epsilon(0.01));
   CHECK(predators[0].get_position().get_x()
-        == doctest::Approx(20.83).epsilon(0.01));
+        == doctest::Approx(33.47).epsilon(0.01));
   CHECK(predators[0].get_position().get_y()
-        == doctest::Approx(7.85).epsilon(0.01));
+        == doctest::Approx(20.97).epsilon(0.01));
 
-  CHECK(predators[4].get_velocity().get_x()
-        == doctest::Approx(-2.76).epsilon(0.01));
-  CHECK(predators[4].get_velocity().get_y()
-        == doctest::Approx(-2.89).epsilon(0.01));
-  CHECK(predators[4].get_position().get_x()
-        == doctest::Approx(717.24).epsilon(0.01));
-  CHECK(predators[4].get_position().get_y()
-        == doctest::Approx(507.11).epsilon(0.01));
+  CHECK(predators[2].get_velocity().get_x()
+        == doctest::Approx(-10.5).epsilon(0.01));
+  CHECK(predators[2].get_velocity().get_y()
+        == doctest::Approx(-11.0).epsilon(0.01));
+  CHECK(predators[2].get_position().get_x()
+        == doctest::Approx(709.5).epsilon(0.01));
+  CHECK(predators[2].get_position().get_y()
+        == doctest::Approx(499.).epsilon(0.01));
 
-  CHECK(predators[5].get_velocity().get_x()
+  CHECK(predators[3].get_velocity().get_x()
         == doctest::Approx(-3.).epsilon(0.01));
-  CHECK(predators[5].get_velocity().get_y()
+  CHECK(predators[3].get_velocity().get_y()
         == doctest::Approx(1.5).epsilon(0.01));
-  CHECK(predators[5].get_position().get_x()
+  CHECK(predators[3].get_position().get_x()
         == doctest::Approx(147).epsilon(0.01));
-  CHECK(predators[5].get_position().get_y()
+  CHECK(predators[3].get_position().get_y()
         == doctest::Approx(201.5).epsilon(0.01));
+}
+
+TEST_CASE("Testing flock_update")
+{
+  const pf::Vector xb1(10.5, 12.);
+  const pf::Vector vb1(1, -1.5);
+
+  const pf::Vector xb2(11., 11.5);
+  const pf::Vector vb2(-0.5, -1.);
+
+  const pf::Vector xb3(0.5, 2.);
+  const pf::Vector vb3(2., 0.);
+
+  const pf::Vector xb4(200., 180.);
+  const pf::Vector vb4(-2, 1.);
+
+  const pf::Vector xb5(710., 505.);
+  const pf::Vector vb5(1.5, 0.5);
+
+  const pf::Vector xb6(10., 12.);
+  const pf::Vector vb6(0.5, -0.5);
+
+  const pf::Vector xb7(16., 14.);
+  const pf::Vector vb7(0., -2.);
+
+  pf::Boid boid1(xb1, vb1, 0);
+  pf::Boid boid2(xb2, vb2, 0);
+  pf::Boid boid3(xb3, vb3, 0);
+  pf::Boid boid4(xb4, vb4, 0);
+  pf::Boid boid5(xb5, vb5, 0);
+  pf::Boid boid6(xb6, vb6, 1);
+  pf::Boid boid7(xb7, vb7, 1);
+
+  const float d       = 25.0f;
+  const float ds      = 1.5f;
+  const float s       = 1.0f;
+  const float a       = 1.0f;
+  const float c       = 0.8f;
+  const float max_vel = 4.0f;
+  const float min_vel = 1.0f;
+  const float delta_t = 1.0f;
+
+  pf::Flock flock(d, ds, s, a, c, max_vel, min_vel);
+
+  std::vector<pf::Boid> boids = {boid1, boid2, boid3, boid4,
+                                 boid5, boid6, boid7};
+
+  std::vector<pf::Boid> neighbors1 = boid1.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors2 = boid2.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors3 = boid3.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors4 = boid4.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors5 = boid5.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors6 = boid6.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors7 = boid7.neighboring(boids, d);
+
+  flock.add_boids(boids);
+  flock.flock_update(delta_t);
+
+  auto boids_0 = flock.get_flock();
+
+  CHECK(boids_0[0].get_velocity().get_x()
+        == doctest::Approx(17.58).epsilon(0.01));
+  CHECK(boids_0[0].get_velocity().get_y()
+        == doctest::Approx(11.94).epsilon(0.01));
+  CHECK(boids_0[0].get_position().get_x()
+        == doctest::Approx(28.08).epsilon(0.01));
+  CHECK(boids_0[0].get_position().get_y()
+        == doctest::Approx(23.94).epsilon(0.01));
+
+  CHECK(boids_0[3].get_velocity().get_x()
+        == doctest::Approx(-2.0).epsilon(0.01));
+  CHECK(boids_0[3].get_velocity().get_y()
+        == doctest::Approx(1.0).epsilon(0.01));
+  CHECK(boids_0[3].get_position().get_x()
+        == doctest::Approx(198.0).epsilon(0.01));
+  CHECK(boids_0[3].get_position().get_y()
+        == doctest::Approx(181.0).epsilon(0.01));
+
+  CHECK(boids_0[4].get_velocity().get_x()
+        == doctest::Approx(-13.5).epsilon(0.01));
+  CHECK(boids_0[4].get_velocity().get_y()
+        == doctest::Approx(-14.5).epsilon(0.01));
+  CHECK(boids_0[4].get_position().get_x()
+        == doctest::Approx(696.5).epsilon(0.01));
+  CHECK(boids_0[4].get_position().get_y()
+        == doctest::Approx(490.5).epsilon(0.01));
 }
