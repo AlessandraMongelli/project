@@ -17,9 +17,9 @@ class Boid
  public:
   Boid();
   Boid(Vector, Vector, bool);
-  
+
   void set_predator(bool);
-  
+
   Vector get_position() const;
   Vector get_velocity() const;
   bool get_predator() const;

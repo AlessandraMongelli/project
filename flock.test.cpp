@@ -244,7 +244,7 @@ TEST_CASE("Testing predators_update")
   const pf::Vector vb2(1.5, -2.);
 
   const pf::Vector xb3(20., 8.);
-  const pf::Vector vb3(3, 1.);
+  const pf::Vector vb3(3., 1.);
 
   const pf::Vector xb4(18., 5.);
   const pf::Vector vb4(2.5, -3.);

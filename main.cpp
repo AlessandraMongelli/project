@@ -118,7 +118,6 @@ int main()
   for (int i = 0; i < nb; ++i) {
     pf::Vector pos_b(pos_x_distrib(eng), pos_y_distrib(eng));
     pf::Vector vel_b(vel_distrib(eng), vel_distrib(eng));
-
     boids1.emplace_back(pos_b, vel_b, false);
   }
 

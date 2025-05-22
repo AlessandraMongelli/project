@@ -18,7 +18,7 @@ Flock::Flock(const float d, const float ds, const float s, const float a,
 void Flock::add_boids(const std::vector<Boid>& boids)
 {
   for (auto& boid : boids) {
-    if (boid.get_predator() == true) {
+    if (boid.get_predator() == 1) {
       predators_.push_back(boid);
     } else {
       flock_.push_back(boid);
@@ -85,7 +85,7 @@ Vector Flock::avoid_predators(const Boid& boid)
 
 Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 {
-  Vector vp(0., 0.);
+  Vector v_cp(0., 0.);
   Vector position = boid.get_position();
 
   auto compare_distances = [&position](const Boid& boid1, const Boid& boid2) {
@@ -98,10 +98,10 @@ Vector Flock::chase_prey(const Boid& boid, const std::vector<Boid>& neighbors)
 
   if (closest != neighbors.end()
       && (closest->get_position() - position).norm() != 0) {
-    vp += (closest->get_position() - position)
-        * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
+    v_cp += (closest->get_position() - position)
+          * (1.0f / (closest->get_position() - position).norm()) * 10.0f;
   }
-  return vp;
+  return v_cp;
 }
 
 void Flock::predators_update(float delta_t)
@@ -134,7 +134,7 @@ void Flock::flock_update(float delta_t)
 
     boid.update_velocity(delta_v);
     boid.speed_limit(max_speed_, min_speed_);
-    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 15.0f);
+    boid.edges_behavior(100.0f, 700.0f, 500.0f, 100.0f, 12.5f);
     boid.update_position(boid.get_velocity() * delta_t);
   }
 }
@@ -150,25 +150,27 @@ Statistics Flock::flock_state() const
         float dist =
             flock_[i].get_position().distance(flock_[j].get_position());
         sum_dist += dist;
-        sum_dist2 += std::pow(dist, 2);
+        sum_dist2 += static_cast<float>(pow(dist, 2));
       }
     }
 
     float n = static_cast<float>(flock_.size() * (flock_.size() - 1)) / 2.0f;
     float average_dist  = sum_dist / n;
     float average_dist2 = sum_dist2 / n;
-    float dev_dist      = static_cast<float>(std::sqrt(average_dist2 - std::pow(average_dist, 2)));
+    float dev_dist =
+        static_cast<float>(sqrt(average_dist2 - pow(average_dist, 2)));
 
     float sum_vel = 0.0f, sum_vel2 = 0.0f;
     for (const auto& boid : flock_) {
       float speed = boid.get_velocity().norm();
       sum_vel += speed;
-      sum_vel2 += static_cast<float>(std::pow(speed, 2));
+      sum_vel2 += static_cast<float>(pow(speed, 2));
     }
 
-    float average_vel  = static_cast<float>(sum_vel / flock_.size());
-    float average_vel2 = static_cast<float>(sum_vel2 / flock_.size());
-    float dev_vel      = static_cast<float>(std::sqrt(average_vel2 - std::pow(average_vel, 2)));
+    float average_vel  = sum_vel / static_cast<float>(flock_.size());
+    float average_vel2 = sum_vel2 / static_cast<float>(flock_.size());
+    float dev_vel =
+        static_cast<float>(sqrt(average_vel2 - pow(average_vel, 2)));
 
     return {average_dist, dev_dist, average_vel, dev_vel};
   }

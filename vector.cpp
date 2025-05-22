@@ -71,7 +71,8 @@ float Vector::product(const Vector& w) const
 
 float Vector::distance(const Vector& w) const
 {
-  const float dist = static_cast<float>(sqrt(pow(x_ - w.x_, 2) + pow(y_ - w.y_, 2)));
+  const float dist =
+      static_cast<float>(sqrt(pow(x_ - w.x_, 2) + pow(y_ - w.y_, 2)));
   assert(dist >= 0.);
   return dist;
 }
