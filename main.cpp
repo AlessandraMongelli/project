@@ -42,10 +42,10 @@ int main()
   }
 
   std::cout
-      << "Input range of view of the boids (any number between 70 and 100): \n";
+      << "Input range of view of the boids (any number between 60 and 100): \n";
   float d;
   std::cin >> d;
-  if (d < 70.0f || d > 100.0f) {
+  if (d < 60.0f || d > 100.0f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
