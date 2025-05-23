@@ -42,28 +42,28 @@ int main()
   }
 
   std::cout
-      << "Input range of view of the boids (any number between 50 and 100): \n";
+      << "Input range of view of the boids (any number between 70 and 100): \n";
   float d;
   std::cin >> d;
-  if (d < 50.0f || d > 100.0f) {
+  if (d < 70.0f || d > 100.0f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
 
-  std::cout << "Input protected range of the boids (any number between 10 and "
-               "15): \n";
+  std::cout << "Input protected range of the boids (any number between 15 and "
+               "20): \n";
   float ds;
   std::cin >> ds;
-  if (ds < 10.0f || ds > 15.0f) {
+  if (ds < 15.0f || ds > 20.0f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
 
   std::cout << "Input protected range repulsion of the boids (any number "
-               "between 0.4 and 0.8): \n";
+               "between 0.6 and 1.0): \n";
   float s;
   std::cin >> s;
-  if (s < 0.4f || s > 0.8f) {
+  if (s < 0.6f || s > 1.0f) {
     std::cerr << "Error: input value outside of permitted range \n";
     return 1;
   }
@@ -91,7 +91,8 @@ int main()
 
   while (delay_clock.getElapsedTime().asSeconds() < 3.0f) {
     std::cout << "The simulation will start in "
-              << (3 - static_cast<int>(delay_clock.getElapsedTime().asSeconds()))
+              << (3
+                  - static_cast<int>(delay_clock.getElapsedTime().asSeconds()))
               << " seconds...\r";
     std::cout.flush();
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
