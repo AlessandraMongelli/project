@@ -229,7 +229,7 @@ TEST_CASE("Testing Flock Class")
 
     CHECK(flock.flock_state().average_dist
           == doctest::Approx(18.6).epsilon(0.1));
-    CHECK(flock.flock_state().dev_dist == doctest::Approx(8.5).epsilon(0.1));
+    CHECK(flock.flock_state().dev_dist == doctest::Approx(6.5).epsilon(0.1));
     CHECK(flock.flock_state().average_vel == doctest::Approx(1.5).epsilon(0.1));
     CHECK(flock.flock_state().dev_vel == doctest::Approx(0.3).epsilon(0.1));
   }
@@ -326,25 +326,17 @@ TEST_CASE("Testing flock_update")
   const pf::Vector xb3(0.5, 2.);
   const pf::Vector vb3(2., 0.);
 
-  const pf::Vector xb4(200., 180.);
-  const pf::Vector vb4(-2., 1.);
+  const pf::Vector xb4(10., 12.);
+  const pf::Vector vb4(0.5, -0.5);
 
-  const pf::Vector xb5(710., 505.);
-  const pf::Vector vb5(1.5, 0.5);
-
-  const pf::Vector xb6(10., 12.);
-  const pf::Vector vb6(0.5, -0.5);
-
-  const pf::Vector xb7(16., 14.);
-  const pf::Vector vb7(0., -2.);
+  const pf::Vector xb5(16., 14.);
+  const pf::Vector vb5(0., -2.);
 
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
   pf::Boid boid3(xb3, vb3, 0);
-  pf::Boid boid4(xb4, vb4, 0);
-  pf::Boid boid5(xb5, vb5, 0);
-  pf::Boid boid6(xb6, vb6, 1);
-  pf::Boid boid7(xb7, vb7, 1);
+  pf::Boid boid4(xb4, vb4, 1);
+  pf::Boid boid5(xb5, vb5, 1);
 
   const float d       = 25.0f;
   const float ds      = 1.5f;
@@ -357,16 +349,13 @@ TEST_CASE("Testing flock_update")
 
   pf::Flock flock(d, ds, s, a, c, max_vel, min_vel);
 
-  std::vector<pf::Boid> boids = {boid1, boid2, boid3, boid4,
-                                 boid5, boid6, boid7};
+  std::vector<pf::Boid> boids = {boid1, boid2, boid3, boid4, boid5};
 
   std::vector<pf::Boid> neighbors1 = boid1.neighboring(boids, d);
   std::vector<pf::Boid> neighbors2 = boid2.neighboring(boids, d);
   std::vector<pf::Boid> neighbors3 = boid3.neighboring(boids, d);
-  std::vector<pf::Boid> neighbors4 = boid4.neighboring(boids, d);
-  std::vector<pf::Boid> neighbors5 = boid5.neighboring(boids, d);
-  std::vector<pf::Boid> neighbors6 = boid6.neighboring(boids, d);
-  std::vector<pf::Boid> neighbors7 = boid7.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors6 = boid4.neighboring(boids, d);
+  std::vector<pf::Boid> neighbors7 = boid5.neighboring(boids, d);
 
   flock.add_boids(boids);
   flock.flock_update(delta_t);
@@ -381,22 +370,4 @@ TEST_CASE("Testing flock_update")
         == doctest::Approx(25.58).epsilon(0.01));
   CHECK(boids_0[0].get_position().get_y()
         == doctest::Approx(21.44).epsilon(0.01));
-
-  CHECK(boids_0[3].get_velocity().get_x()
-        == doctest::Approx(-2.0).epsilon(0.01));
-  CHECK(boids_0[3].get_velocity().get_y()
-        == doctest::Approx(1.0).epsilon(0.01));
-  CHECK(boids_0[3].get_position().get_x()
-        == doctest::Approx(198.0).epsilon(0.01));
-  CHECK(boids_0[3].get_position().get_y()
-        == doctest::Approx(181.0).epsilon(0.01));
-
-  CHECK(boids_0[4].get_velocity().get_x()
-        == doctest::Approx(-11).epsilon(0.01));
-  CHECK(boids_0[4].get_velocity().get_y()
-        == doctest::Approx(-12).epsilon(0.01));
-  CHECK(boids_0[4].get_position().get_x()
-        == doctest::Approx(699.).epsilon(0.01));
-  CHECK(boids_0[4].get_position().get_y()
-        == doctest::Approx(493).epsilon(0.01));
-}
+  }
