@@ -6,20 +6,17 @@
 
 TEST_CASE("Testing Boid Class")
 {
-  const pf::Vector xb1(0., 0.);
-  const pf::Vector vb1(5., -1.);
-  // const float va1(180.0f);
+  const pf::Vector xb1(0.f, 0.f);
+  const pf::Vector vb1(5.f, -1.f);
 
-  const pf::Vector xb2(1.5, 0.5);
-  const pf::Vector vb2(-0.5, 2.5);
-  // const float va2(180.0f);
+  const pf::Vector xb2(1.5f, 0.5f);
+  const pf::Vector vb2(-0.5f, 2.5f);
 
-  const pf::Vector xb3(2.2, -1.8);
-  const pf::Vector vb3(3.0, 1.0);
-  // const float va3(180.0f);
+  const pf::Vector xb3(2.2f, -1.8f);
+  const pf::Vector vb3(3.0f, 1.0f);
 
-  const pf::Vector xb4(-1.0, -0.5);
-  const pf::Vector vb4(-0.25, -2.0);
+  const pf::Vector xb4(-1.0f, -0.5f);
+  const pf::Vector vb4(-0.25f, -2.0f);
 
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
@@ -43,9 +40,9 @@ TEST_CASE("Testing Boid Class")
   SUBCASE("Testing the Separation rule")
   {
     CHECK(boid1.separation(neighbors1, 2.5f, 1.0f).get_x()
-          == doctest::Approx(-0.5f).epsilon(0.1));
+          == doctest::Approx(-0.5).epsilon(0.1));
     CHECK(boid1.separation(neighbors1, 2.5f, 1.0f).get_y()
-          == doctest::Approx(0.0f).epsilon(0.1));
+          == doctest::Approx(0.0).epsilon(0.1));
     CHECK(boid2.separation(neighbors2, 2.0f, 1.0f).get_x()
           == doctest::Approx(1.5).epsilon(0.1));
     CHECK(boid2.separation(neighbors2, 2.0f, 1.0f).get_y()
@@ -122,10 +119,10 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the speed limit method")
   {
-    boid1.speed_limit(5.0, 1.0);
-    boid2.speed_limit(6, 3);
-    boid3.speed_limit(5, 1);
-    boid4.speed_limit(5, 3);
+    boid1.speed_limit(5.0f, 1.0f);
+    boid2.speed_limit(6.0f, 3.0f);
+    boid3.speed_limit(5.0f, 1.0f);
+    boid4.speed_limit(5.0f, 3.0f);
     CHECK(boid1.get_velocity().norm() == doctest::Approx(4.999).epsilon(0.001));
     CHECK(boid2.get_velocity().norm() == doctest::Approx(2.999).epsilon(0.001));
     CHECK(boid3.get_velocity().norm() == doctest::Approx(3.162).epsilon(0.001));
@@ -134,8 +131,8 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the update position method ")
   {
-    const pf::Vector delta_x1{1., -2.};
-    const pf::Vector delta_x2{0., -0.25};
+    const pf::Vector delta_x1{1.f, -2.f};
+    const pf::Vector delta_x2{0.f, -0.25f};
     boid1.update_position(delta_x1);
     boid2.update_position(delta_x2);
     CHECK(boid1.get_position().get_x() == doctest::Approx(1.0).epsilon(0.1));
@@ -146,8 +143,8 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the update velocity method ")
   {
-    const pf::Vector delta_v1{-0.5, 1.};
-    const pf::Vector delta_v2{0., 4.};
+    const pf::Vector delta_v1{-0.5f, 1.f};
+    const pf::Vector delta_v2{0.f, 4.f};
     boid1.update_velocity(delta_v1);
     boid2.update_velocity(delta_v2);
     CHECK(boid1.get_velocity().get_x() == doctest::Approx(4.5).epsilon(0.1));
@@ -166,9 +163,9 @@ TEST_CASE("Testing Boid Class")
 
   SUBCASE("Testing the edges behavior method ")
   {
-    boid1.edges_behavior(-5., 5., 5., 1.5, 1.);
-    boid2.edges_behavior(2., 7., 0., -7., 1.);
-    boid3.edges_behavior(-5., 1., 5., -2., 2.);
+    boid1.edges_behavior(-5.f, 5.f, 5.f, 1.5f, 1.f);
+    boid2.edges_behavior(2.f, 7.f, 0.f, -7.f, 1.f);
+    boid3.edges_behavior(-5.f, 1.f, 5.f, -2.f, 2.f);
     CHECK(boid1.get_velocity().get_x() == doctest::Approx(5.).epsilon(0.1));
     CHECK(boid1.get_velocity().get_y() == doctest::Approx(0.).epsilon(0.1));
     CHECK(boid2.get_velocity().get_x() == doctest::Approx(0.5).epsilon(0.1));
@@ -181,18 +178,18 @@ TEST_CASE("Testing == operator")
 {
   SUBCASE("Equal component")
   {
-    const pf::Vector xb{1., 2.};
-    const pf::Vector vb{2., 2.};
+    const pf::Vector xb{1.f, 2.f};
+    const pf::Vector vb{2.f, 2.f};
     pf::Boid boid1(xb, vb, 0);
     pf::Boid boid2(xb, vb, 0);
     CHECK(boid1.operator==(boid2) == true);
   }
   SUBCASE("Non-equal component")
   {
-    const pf::Vector xb1{1., 2.};
-    const pf::Vector vb1{2., 2.};
-    const pf::Vector xb2{0.5, 1.};
-    const pf::Vector vb2{3., 3.};
+    const pf::Vector xb1{1.f, 2.f};
+    const pf::Vector vb1{2.f, 2.f};
+    const pf::Vector xb2{0.5f, 1.f};
+    const pf::Vector vb2{3.f, 3.f};
     pf::Boid boid1(xb1, vb1, 0);
     pf::Boid boid2(xb2, vb2, 0);
     CHECK(boid1.operator==(boid2) == false);
