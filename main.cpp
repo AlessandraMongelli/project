@@ -115,21 +115,18 @@ int main()
 
   std::uniform_real_distribution<float> vel_distrib(25.0f, 95.0f);
 
-  // Create n normal boids
-  for (int i = 0; i < nb; ++i) {
+    for (int i = 0; i < nb; ++i) {
     pf::Vector pos_b(pos_x_distrib(eng), pos_y_distrib(eng));
     pf::Vector vel_b(vel_distrib(eng), vel_distrib(eng));
     boids1.emplace_back(pos_b, vel_b, false);
   }
 
-  // Create n predators
   for (int i = 0; i < np; ++i) {
     pf::Vector pos_p(pos_x_distrib(eng), pos_y_distrib(eng));
     pf::Vector vel_p(vel_distrib(eng), vel_distrib(eng));
     boids1.emplace_back(pos_p, vel_p, true);
   }
 
-  // Add all boids to the flock
   flock.add_boids(boids1);
 
   sf::Clock clock;
