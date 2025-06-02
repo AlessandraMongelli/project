@@ -7,17 +7,17 @@
 
 TEST_CASE("Testing Flock Class")
 {
-  const pf::Vector xb1(15, 0.);
-  const pf::Vector vb1(0.5, 2.);
+  const pf::Vector xb1(15.f, 0.f);
+  const pf::Vector vb1(0.5f, 2.f);
 
-  const pf::Vector xb2(-5., 10.);
-  const pf::Vector vb2(-0.5, -1.);
+  const pf::Vector xb2(-5.f, 10.f);
+  const pf::Vector vb2(-0.5f, -1.f);
 
-  const pf::Vector xb3(12., -11);
-  const pf::Vector vb3(1.5, 0.5);
+  const pf::Vector xb3(12.f, -11.f);
+  const pf::Vector vb3(1.5f, 0.5f);
 
-  const pf::Vector xb4(-6., 7);
-  const pf::Vector vb4(-1., 1.);
+  const pf::Vector xb4(-6.f, 7.f);
+  const pf::Vector vb4(-1.f, 1.f);
 
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
@@ -86,17 +86,17 @@ TEST_CASE("Testing Flock Class")
 
   SUBCASE("Testing flock_separation method")
   {
-    const pf::Vector xb1_2(1.5, 0.);
-    const pf::Vector vb1_2(0.5, 2.);
+    const pf::Vector xb1_2(1.5f, 0.f);
+    const pf::Vector vb1_2(0.5f, 2.f);
 
-    const pf::Vector xb2_2(0.5, 1.);
-    const pf::Vector vb2_2(-0.5, -1.);
+    const pf::Vector xb2_2(0.5f, 1.f);
+    const pf::Vector vb2_2(-0.5f, -1.f);
 
-    const pf::Vector xb3_2(1., -0.5);
-    const pf::Vector vb3_2(1.5, 0.5);
+    const pf::Vector xb3_2(1.f, -0.5f);
+    const pf::Vector vb3_2(1.5f, 0.5f);
 
-    const pf::Vector xb4_2(0., -1.5);
-    const pf::Vector vb4_2(-1., 1.);
+    const pf::Vector xb4_2(0.f, -1.5f);
+    const pf::Vector vb4_2(-1.f, 1.f);
 
     pf::Boid boid1_2(xb1_2, vb1_2, 0);
     pf::Boid boid2_2(xb2_2, vb2_2, 0);
@@ -155,8 +155,8 @@ TEST_CASE("Testing Flock Class")
 
   SUBCASE("Testing avoid_predators method")
   {
-    const pf::Vector xb5(-5.5, 7);
-    const pf::Vector vb5(2., 0.5);
+    const pf::Vector xb5(-5.5f, 7.f);
+    const pf::Vector vb5(2.f, 0.5f);
     pf::Boid boid5(xb5, vb5, 0);
     std::vector<pf::Boid> boids5 = {boid5};
 
@@ -183,11 +183,11 @@ TEST_CASE("Testing Flock Class")
 
   SUBCASE("Testing chase_prey method")
   {
-    const pf::Vector xb5(10., 4.);
-    const pf::Vector vb5(2, 0.5);
+    const pf::Vector xb5(10.f, 4.f);
+    const pf::Vector vb5(2.f, 0.5f);
 
-    const pf::Vector xb6(60., 40.);
-    const pf::Vector vb6(1.5, -2.);
+    const pf::Vector xb6(60.f, 40.f);
+    const pf::Vector vb6(1.5f, -2.f);
 
     pf::Boid boid5(xb5, vb5, 1);
     pf::Boid boid6(xb6, vb6, 1);
@@ -237,23 +237,23 @@ TEST_CASE("Testing Flock Class")
 
 TEST_CASE("Testing predators_update")
 {
-  const pf::Vector xb1(17., 9.);
-  const pf::Vector vb1(2, 1.5);
+  const pf::Vector xb1(17.f, 9.f);
+  const pf::Vector vb1(2.f, 1.5f);
 
-  const pf::Vector xb2(16., 9.);
-  const pf::Vector vb2(1.5, -2.);
+  const pf::Vector xb2(16.f, 9.f);
+  const pf::Vector vb2(1.5f, -2.f);
 
-  const pf::Vector xb3(20., 8.);
-  const pf::Vector vb3(3., 1.);
+  const pf::Vector xb3(20.f, 8.f);
+  const pf::Vector vb3(3.f, 1.f);
 
-  const pf::Vector xb4(18., 5.);
-  const pf::Vector vb4(2.5, -3.);
+  const pf::Vector xb4(18.f, 5.f);
+  const pf::Vector vb4(2.5f, -3.f);
 
-  const pf::Vector xb5(720., 510.);
-  const pf::Vector vb5(2, 1.5);
+  const pf::Vector xb5(720.f, 510.f);
+  const pf::Vector vb5(2.f, 1.5f);
 
-  const pf::Vector xb6(150., 200.);
-  const pf::Vector vb6(-3, 1.5);
+  const pf::Vector xb6(150.f, 200.f);
+  const pf::Vector vb6(-3.f, 1.5f);
 
   pf::Boid boid1(xb1, vb1, 1);
   pf::Boid boid2(xb2, vb2, 1);
@@ -317,20 +317,20 @@ TEST_CASE("Testing predators_update")
 
 TEST_CASE("Testing flock_update")
 {
-  const pf::Vector xb1(10.5, 12.);
-  const pf::Vector vb1(1., -1.5);
+  const pf::Vector xb1(10.5f, 12.f);
+  const pf::Vector vb1(1.f, -1.5f);
 
-  const pf::Vector xb2(11., 11.5);
-  const pf::Vector vb2(-0.5, -1.);
+  const pf::Vector xb2(11.f, 11.5f);
+  const pf::Vector vb2(-0.5f, -1.f);
 
-  const pf::Vector xb3(0.5, 2.);
-  const pf::Vector vb3(2., 0.);
+  const pf::Vector xb3(0.5f, 2.f);
+  const pf::Vector vb3(2.f, 0.f);
 
-  const pf::Vector xb4(10., 12.);
-  const pf::Vector vb4(0.5, -0.5);
+  const pf::Vector xb4(10.f, 12.f);
+  const pf::Vector vb4(0.5f, -0.5f);
 
-  const pf::Vector xb5(16., 14.);
-  const pf::Vector vb5(0., -2.);
+  const pf::Vector xb5(16.f, 14.f);
+  const pf::Vector vb5(0.f, -2.f);
 
   pf::Boid boid1(xb1, vb1, 0);
   pf::Boid boid2(xb2, vb2, 0);
@@ -370,4 +370,4 @@ TEST_CASE("Testing flock_update")
         == doctest::Approx(25.58).epsilon(0.01));
   CHECK(boids_0[0].get_position().get_y()
         == doctest::Approx(21.44).epsilon(0.01));
-  }
+}
